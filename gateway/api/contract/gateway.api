@@ -29,14 +29,13 @@ service gozeroapp-server{
 }
 
 @server (
-    group:products
+    group: products
     prefix: /v1
     middleware: HeaderValidationMiddleware
 )
 
 service gozeroapp-server {
     @doc "Products routes"
-
     @handler CreateProduct
     post /product/create (createProductReq) returns (createProductResp)
 
@@ -51,5 +50,15 @@ service gozeroapp-server {
 
     @handler GetProducts
     get /products (getProductsReq) returns (getProductsResp)
+}
 
+@server (
+    group: orders
+    prefix: /v1
+    middleware: HeaderValidationMiddleware
+)
+service gozeroapp-server {
+    @doc "Orders routes"
+    @handler GetOrders
+    get /orders (getOrdersReq) returns (getOrdersResp)
 }
