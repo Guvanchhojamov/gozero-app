@@ -1,0 +1,55 @@
+syntax = "v1"
+
+import  (
+    "base.api"
+    "request_model.api"
+)
+
+info(
+    title: "gozero proj here"
+    desc: "type desc here"
+    author: "type author here"
+    email: "type email here"
+    version: "type version here"
+)
+
+@server (
+    group: authorization
+    prefix: /v1/auth
+    middleware: HeaderValidationMiddleware
+)
+service gozeroapp-server{
+    @doc "Auth routes"
+
+    @handler SignUp
+    post /signUp (signUpReq) returns (signUpResp)
+
+    @handler SignIn
+    post /signIn (signInReq) returns (signInResp)
+}
+
+@server (
+    group:products
+    prefix: /v1
+    middleware: HeaderValidationMiddleware
+)
+
+service gozeroapp-server {
+    @doc "Products routes"
+
+    @handler CreateProduct
+    post /product/create (createProductReq) returns (createProductResp)
+
+    @handler UpdateProduct
+    patch /product/update (updateProductReq) returns (updateProductResp)
+
+    @handler DeleteProduct
+    delete /product/:productId (deleteProductReq) returns (updateProductResp)
+
+    @handler GetProductById
+    get /produtc/:productId (getProductByIdReq) returns (getProductByIdResp)
+
+    @handler GetProducts
+    get /products (getProductsReq) returns (getProductsResp)
+
+}

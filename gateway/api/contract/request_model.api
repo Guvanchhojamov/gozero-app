@@ -1,0 +1,69 @@
+syntax = "v1"
+import "base.api"
+// Auth
+type (
+    signUpReq{
+        Login string `json:"login"`
+        Password string `json:"password"`
+    }
+    signUpResp{
+        UserId uint32 `json:"userId"`
+    }
+
+    signInReq{
+        Login string `json:"login"`
+        Password string `json:"password"`
+    }
+    signInResp{
+        Token string `json:"token"`
+    }
+)
+
+// Product
+type (
+    getProductByIdReq{
+        ProductId uint32 `path:"productId"`
+    }
+    getProductByIdResp{
+        Product Product `json:"product"`
+    }
+    createProductReq{
+        Name string `json:"name"`
+        Price float32 `json:"price"`
+    }
+    createProductResp{
+        ProductId uint32 `json:"productId"`
+    }
+    updateProductReq{
+        Id uint32 `json:"id"`
+        Name string `json:"name,optional"`
+        Price float32 `json:"price,optional"`
+    }
+    updateProductResp{
+        ProductId uint32 `json:"productId"`
+    }
+
+    deleteProductReq{
+        ProductId uint32 `path:"productId"`
+    }
+    deleteProductResp{
+        StatusCode uint32 `json:"statusCode"`
+        Message uint32 `json:"message":"productId"`
+    }
+
+    getProductsReq{}
+
+    getProductsResp {
+        Products []Product `json:"products"`
+    }
+)
+
+// Order
+type (
+    getOrdersReq{}
+
+    getOrdersResp{
+        Orders []Order `json:"orders"`
+    }
+)
+
