@@ -1,0 +1,33 @@
+version: '3.3'
+services:
+  gozero-db:
+    image: postgres:14.1-alpine
+    container_name: gozero-db
+    restart: always
+    environment:
+      - POSTGRES_USER=db_admin
+      - POSTGRES_PASSWORD=1245abcde
+      - POSTGRES_DB=gozeroApp
+    ports:
+      - '5464:5432'
+    volumes:
+      - gozero-db-storage:/var/lib/postgresql/data
+
+  redis-gozero:
+    container_name: redis-gozero
+    image: redis:7-alpine
+    restart: unless-stopped
+    ports:
+      - 6369:6379
+
+  etcd-gozero:
+    container_name: etcd-gozero
+    image: bitnami/etcd:latest
+    environment:
+      - ALLOW_NONE_AUTHENTICATION=yes
+    ports:
+      - 2379:2379
+      - 2380:2380
+
+volumes:
+  gozero-db-storage:
