@@ -16,7 +16,7 @@ func NewRepository(db *pgxpool.Pool) *Repository {
 }
 
 func (r *Repository) CreateUser(ctx context.Context, userInput *userauthservice.SignUpRequest) (userId uint32, err error) {
-	query := fmt.Sprintf("INSERT INTO users (id, , column3, ...)\nVALUES (value1, value2, value3, ...);")
+	query := fmt.Sprintf(`INSERT INTO users (login,role_id, password) VALUES ($1, $2, $3, ...)`)
 	rows, err := r.db.Query(ctx, query)
 	if err != nil {
 		return 0, err
