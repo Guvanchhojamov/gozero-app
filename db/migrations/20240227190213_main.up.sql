@@ -2,8 +2,10 @@ CREATE TABLE IF NOT EXISTS users
 (
     id               serial primary key not null,
     login            varchar(255) unique not null,
+    role_id          int not null,
     password         varchar(255) not null,
-    created_at       timestamp(0) not null default CURRENT_TIMESTAMP
+    created_at       timestamp(0) not null default CURRENT_TIMESTAMP,
+    CONSTRAINT fk_role  FOREIGN KEY(role_id) REFERENCES roles(id),
 );
 
 CREATE TABLE IF NOT EXISTS products

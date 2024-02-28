@@ -6,9 +6,8 @@ import (
 )
 
 @server (
-	group:      authorization
-	prefix:     /v1/auth
-	middleware: HeaderValidationMiddleware
+	group:  authorization
+	prefix: /v1/auth
 )
 service appServerApi {
 	@doc "Auth routes"
