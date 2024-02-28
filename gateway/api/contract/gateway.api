@@ -6,8 +6,9 @@ import (
 )
 
 @server (
-	group:  authorization
-	prefix: /v1/auth
+	group:      authorization
+	prefix:     /v1/auth
+	middleware: RolePermissionMiddleware
 )
 service appServerApi {
 	@doc "Auth routes"
@@ -21,7 +22,7 @@ service appServerApi {
 @server (
 	group:      products
 	prefix:     /v1
-	middleware: HeaderValidationMiddleware
+	middleware: HeaderValidationMiddleware,RolePermissionMiddleware
 )
 service appServerApi {
 	@doc "Products routes"
@@ -44,7 +45,7 @@ service appServerApi {
 @server (
 	group:      orders
 	prefix:     /v1
-	middleware: HeaderValidationMiddleware
+	middleware: HeaderValidationMiddleware,RolePermissionMiddleware
 )
 service appServerApi {
 	@doc "Orders routes"

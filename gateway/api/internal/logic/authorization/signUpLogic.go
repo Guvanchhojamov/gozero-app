@@ -2,6 +2,7 @@ package authorization
 
 import (
 	"context"
+	"github.com/Guvanchhojamov/gozero-app/gateway/services/authorization/rpc/userauthservice"
 
 	"github.com/Guvanchhojamov/gozero-app/gateway/api/internal/svc"
 	"github.com/Guvanchhojamov/gozero-app/gateway/api/internal/types"
@@ -25,6 +26,14 @@ func NewSignUpLogic(ctx context.Context, svcCtx *svc.ServiceContext) *SignUpLogi
 
 func (l *SignUpLogic) SignUp(req *types.SignUpReq) (resp *types.SignUpResp, err error) {
 	// todo: add your logic here and delete this line
-
-	return
+	signUpReq := &userauthservice.SignUpRequest{
+		Login:    req.Login,
+		Password: req.Password,
+		RoleId:   req.RoleId,
+	}
+	signUpResp, err := l.svcCtx.Authorization.SignUp(l.ctx, signUpReq)
+	if err != nil {
+		return nil, err
+	}
+	return &types.SignUpResp{UserId: signUpResp.UserId}, err
 }

@@ -5,7 +5,7 @@ CREATE TABLE IF NOT EXISTS users
     role_id          int not null,
     password         varchar(255) not null,
     created_at       timestamp(0) not null default CURRENT_TIMESTAMP,
-    CONSTRAINT fk_role  FOREIGN KEY(role_id) REFERENCES roles(id),
+    CONSTRAINT fk_role  FOREIGN KEY(role_id) REFERENCES roles(id)
 );
 
 CREATE TABLE IF NOT EXISTS products

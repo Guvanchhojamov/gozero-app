@@ -6,6 +6,7 @@ import "base.api"
 type (
 	signUpReq {
 		Login    string `json:"login"`
+		RoleId   uint32 `json:"roleId"`
 		Password string `json:"password"`
 	}
 	signUpResp {

@@ -18,7 +18,7 @@ type Product struct {
 type User struct {
 	Id           uint32 `json:"id"`
 	Login        string `json:"login"`
-	RoleId       string `json:"roleId"`
+	RoleId       uint32 `json:"roleId"`
 	PasswordHash string `json:"password_hash"`
 	CreatedAt    uint32 `json:"createdAt"`
 }
@@ -74,6 +74,7 @@ type SignInResp struct {
 
 type SignUpReq struct {
 	Login    string `json:"login"`
+	RoleId   uint32 `json:"roleId"`
 	Password string `json:"password"`
 }
 
