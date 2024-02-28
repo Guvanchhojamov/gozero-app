@@ -3,6 +3,7 @@ package main
 import (
 	"flag"
 	"fmt"
+	"github.com/zeromicro/go-zero/core/logx"
 
 	"github.com/Guvanchhojamov/gozero-app/gateway/services/authorization/rpc/internal/config"
 	"github.com/Guvanchhojamov/gozero-app/gateway/services/authorization/rpc/internal/server"
@@ -23,7 +24,11 @@ func main() {
 
 	var c config.Config
 	conf.MustLoad(*configFile, &c)
-	ctx := svc.NewServiceContext(c)
+	ctx, err := svc.NewServiceContext(c)
+	if err != nil {
+		logx.Error(err)
+		return
+	}
 
 	s := zrpc.MustNewServer(c.RpcServerConf, func(grpcServer *grpc.Server) {
 		v1.RegisterUserAuthServiceServer(grpcServer, server.NewUserAuthServiceServer(ctx))

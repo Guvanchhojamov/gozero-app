@@ -25,7 +25,10 @@ func NewSignUpLogic(ctx context.Context, svcCtx *svc.ServiceContext) *SignUpLogi
 }
 
 func (l *SignUpLogic) SignUp(in *v1.SignUpRequest) (*v1.SignUpResponse, error) {
-	// todo: add your logic here and delete this line
-	fmt.Println("cool we are in rpc logic")
-	return &v1.SignUpResponse{UserId: 155}, nil
+	fmt.Println("in rpc logic")
+	userId, err := l.svcCtx.App.Repository.CreateUser(l.ctx, in)
+	if err != nil {
+		return nil, err
+	}
+	return &v1.SignUpResponse{UserId: userId}, nil
 }

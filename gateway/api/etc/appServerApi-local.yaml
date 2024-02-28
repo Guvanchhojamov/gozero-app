@@ -10,5 +10,14 @@ Services:
 
 App:
   DateBase:
+    Postgres:
+      Username: db_admin
+      Password: abc12345
+      Host: localhost
+      Port: "5464"
+      DbName: testdb
+      SslMode: disable
+  JWTSecretKey: "abc"
   Cache:
-  JWT:
+      Host: localhost:9000
+      Pass: pass123
