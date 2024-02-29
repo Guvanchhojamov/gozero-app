@@ -8,13 +8,19 @@ import (
 @server (
 	group:      authorization
 	prefix:     /v1/auth
-	middleware: RolePermissionMiddleware
+	middleware: HeaderValidationMiddleware
 )
 service appServerApi {
 	@doc "Auth routes"
 	@handler SignUp
 	post /signUp (signUpReq) returns (signUpResp)
+}
 
+@server (
+	group:  authorization
+	prefix: /v1/auth
+)
+service appServerApi {
 	@handler SignIn
 	post /signIn (signInReq) returns (signInResp)
 }

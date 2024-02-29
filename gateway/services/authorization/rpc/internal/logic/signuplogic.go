@@ -2,7 +2,6 @@ package logic
 
 import (
 	"context"
-	"fmt"
 
 	"github.com/Guvanchhojamov/gozero-app/gateway/services/authorization/rpc/internal/svc"
 	"github.com/Guvanchhojamov/gozero-app/gateway/services/authorization/rpc/v1"
@@ -25,10 +24,7 @@ func NewSignUpLogic(ctx context.Context, svcCtx *svc.ServiceContext) *SignUpLogi
 }
 
 func (l *SignUpLogic) SignUp(in *v1.SignUpRequest) (*v1.SignUpResponse, error) {
-	fmt.Println("in rpc logic")
-	userId, err := l.svcCtx.App.Repository.CreateUser(l.ctx, in)
-	if err != nil {
-		return nil, err
-	}
-	return &v1.SignUpResponse{UserId: userId}, nil
+	// todo: add your logic here and delete this line
+
+	return &v1.SignUpResponse{}, nil
 }

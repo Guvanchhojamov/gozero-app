@@ -4,7 +4,9 @@ go 1.22.0
 
 require (
 	github.com/go-errors/errors v1.5.1
+	github.com/golang-jwt/jwt/v4 v4.5.0
 	github.com/jackc/pgx/v4 v4.18.1
+	github.com/jackc/pgx/v5 v5.5.2
 	github.com/zeromicro/go-zero v1.6.2
 	google.golang.org/grpc v1.61.0
 	google.golang.org/protobuf v1.32.0
@@ -26,7 +28,6 @@ require (
 	github.com/go-openapi/jsonreference v0.20.2 // indirect
 	github.com/go-openapi/swag v0.22.4 // indirect
 	github.com/gogo/protobuf v1.3.2 // indirect
-	github.com/golang-jwt/jwt/v4 v4.5.0 // indirect
 	github.com/golang/mock v1.6.0 // indirect
 	github.com/golang/protobuf v1.5.3 // indirect
 	github.com/google/gnostic-models v0.6.8 // indirect

@@ -2,10 +2,9 @@ package authorization
 
 import (
 	"context"
-
 	"github.com/Guvanchhojamov/gozero-app/gateway/api/internal/svc"
 	"github.com/Guvanchhojamov/gozero-app/gateway/api/internal/types"
-
+	v1 "github.com/Guvanchhojamov/gozero-app/gateway/services/authorization/rpc/v1"
 	"github.com/zeromicro/go-zero/core/logx"
 )
 
@@ -25,6 +24,14 @@ func NewSignInLogic(ctx context.Context, svcCtx *svc.ServiceContext) *SignInLogi
 
 func (l *SignInLogic) SignIn(req *types.SignInReq) (resp *types.SignInResp, err error) {
 	// todo: add your logic here and delete this line
-
-	return
+	input := &v1.SignInRequest{
+		Login:    req.Login,
+		Password: req.Password,
+	}
+	response, err := l.svcCtx.Authorization.SignIn(l.ctx, input)
+	if err != nil {
+		//logx.Errorf("signInLogic err: %s", err)
+		return nil, err
+	}
+	return &types.SignInResp{Token: response.Token}, err
 }

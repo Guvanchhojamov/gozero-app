@@ -15,13 +15,8 @@ import (
 func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 	server.AddRoutes(
 		rest.WithMiddlewares(
-			[]rest.Middleware{serverCtx.RolePermissionMiddleware},
+			[]rest.Middleware{serverCtx.HeaderValidationMiddleware},
 			[]rest.Route{
-				{
-					Method:  http.MethodPost,
-					Path:    "/signIn",
-					Handler: authorization.SignInHandler(serverCtx),
-				},
 				{
 					Method:  http.MethodPost,
 					Path:    "/signUp",
@@ -29,6 +24,17 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 				},
 			}...,
 		),
+		rest.WithPrefix("/v1/auth"),
+	)
+
+	server.AddRoutes(
+		[]rest.Route{
+			{
+				Method:  http.MethodPost,
+				Path:    "/signIn",
+				Handler: authorization.SignInHandler(serverCtx),
+			},
+		},
 		rest.WithPrefix("/v1/auth"),
 	)
 

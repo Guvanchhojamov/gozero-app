@@ -3,6 +3,7 @@ package main
 import (
 	"flag"
 	"fmt"
+	"github.com/Guvanchhojamov/gozero-app/gateway/api/internal/app"
 
 	"github.com/Guvanchhojamov/gozero-app/gateway/api/internal/config"
 	"github.com/Guvanchhojamov/gozero-app/gateway/api/internal/handler"
@@ -22,8 +23,8 @@ func main() {
 
 	server := rest.MustNewServer(c.RestConf)
 	defer server.Stop()
-
-	ctx := svc.NewServiceContext(c)
+	domain := app.NewDomain(c)
+	ctx := svc.NewServiceContext(c, domain)
 	handler.RegisterHandlers(server, ctx)
 
 	fmt.Printf("Starting server at %s:%d...\n", c.Host, c.Port)

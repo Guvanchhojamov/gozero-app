@@ -22,5 +22,5 @@ message SignInResponse {
 
 service UserAuthService {
   rpc SignUp (SignUpRequest) returns (SignUpResponse) {};
-  rpc SignIn (SignInRequest) returns (SignUpResponse) {};
+  rpc SignIn (SignInRequest) returns (SignInResponse) {};
 }

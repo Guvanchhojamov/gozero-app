@@ -2,7 +2,6 @@ package logic
 
 import (
 	"context"
-
 	"github.com/Guvanchhojamov/gozero-app/gateway/services/authorization/rpc/internal/svc"
 	"github.com/Guvanchhojamov/gozero-app/gateway/services/authorization/rpc/v1"
 
@@ -23,8 +22,12 @@ func NewSignInLogic(ctx context.Context, svcCtx *svc.ServiceContext) *SignInLogi
 	}
 }
 
-func (l *SignInLogic) SignIn(in *v1.SignInRequest) (*v1.SignUpResponse, error) {
-	// todo: add your logic here and delete this line
+func (l *SignInLogic) SignIn(in *v1.SignInRequest) (*v1.SignInResponse, error) {
+	token, err := l.svcCtx.App.Repository.GenerateToken(l.ctx, in.Login, in.Password)
+	if err != nil {
+		logx.Errorf("errGenerateToken: %s", err)
+		return nil, err
+	}
 
-	return &v1.SignUpResponse{}, nil
+	return &v1.SignInResponse{Token: token}, nil
 }
