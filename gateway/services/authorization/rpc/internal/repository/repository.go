@@ -65,6 +65,6 @@ func (r *Repository) getUserFromDB(ctx context.Context, login string, passHash s
 	return user, nil
 }
 
-func (r *Repository) CheckRolePersmission(ctx context.Context, userId uint32) {
-	query := fmt.Sprintf(`SELECT roles.id AS role_id, roles.name FROM roles JOIN users ON roles.id = users.role_id WHERE users.id = 1`)
-}
+//func (r *Repository) CheckRolePersmission(ctx context.Context, userId uint32) {
+//	query := fmt.Sprintf(`SELECT roles.id AS role_id, roles.name FROM roles JOIN users ON roles.id = users.role_id WHERE users.id = 1`)
+//}
