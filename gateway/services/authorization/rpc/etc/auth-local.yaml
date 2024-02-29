@@ -1,0 +1,17 @@
+Name: auth.rpc
+ListenOn: 0.0.0.0:8080
+Etcd:
+  Hosts:
+  - 127.0.0.1:2379
+  Key: auth.rpc
+App:
+  Postgres:
+    Username: db_admin
+    Password: abc12345
+    Host: localhost
+    Port: "5464"
+    DbName: testdb
+    SslMode: disable
+  Cache:
+    Host: localhost:9000
+    Pass: pass123

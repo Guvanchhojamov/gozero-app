@@ -1,21 +1,24 @@
 syntax = "v1"
+
 type (
-    User{
-        Id uint32 `json:"id"`
-        Login string `json:"login"`
-        PasswordHash string `json:"password_hash"`
-        CreatedAt uint32 `json:"createdAt"`
-    }
-    Product {
-        Id uint32 `json:"id"`
-        Name string `json:"name"`
-        Price float32 `json:"price"`
-        CreatedAt uint32 `json:"createdAt"`
-    }
-    Order{
-        Id uint32 `json:"id"`
-        UserId uint32 `json:"userId"`
-        ProductId uint32 `json:"productId"`
-        CreatedAt uint32 `json:"createdAt"`
-    }
+	User {
+		Id           uint32 `json:"id"`
+		Login        string `json:"login"`
+		RoleId       uint32 `json:"roleId"`
+		PasswordHash string `json:"password_hash"`
+		CreatedAt    uint32 `json:"createdAt"`
+	}
+	Product {
+		Id        uint32  `json:"id"`
+		Name      string  `json:"name"`
+		Price     float32 `json:"price"`
+		CreatedAt uint32  `json:"createdAt"`
+	}
+	Order {
+		Id        uint32 `json:"id"`
+		UserId    uint32 `json:"userId"`
+		ProductId uint32 `json:"productId"`
+		CreatedAt uint32 `json:"createdAt"`
+	}
 )
+

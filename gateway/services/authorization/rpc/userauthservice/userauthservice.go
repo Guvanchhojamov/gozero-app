@@ -20,7 +20,7 @@ type (
 
 	UserAuthService interface {
 		SignUp(ctx context.Context, in *SignUpRequest, opts ...grpc.CallOption) (*SignUpResponse, error)
-		SignIn(ctx context.Context, in *SignInRequest, opts ...grpc.CallOption) (*SignUpResponse, error)
+		SignIn(ctx context.Context, in *SignInRequest, opts ...grpc.CallOption) (*SignInResponse, error)
 	}
 
 	defaultUserAuthService struct {
@@ -39,7 +39,7 @@ func (m *defaultUserAuthService) SignUp(ctx context.Context, in *SignUpRequest, 
 	return client.SignUp(ctx, in, opts...)
 }
 
-func (m *defaultUserAuthService) SignIn(ctx context.Context, in *SignInRequest, opts ...grpc.CallOption) (*SignUpResponse, error) {
+func (m *defaultUserAuthService) SignIn(ctx context.Context, in *SignInRequest, opts ...grpc.CallOption) (*SignInResponse, error) {
 	client := v1.NewUserAuthServiceClient(m.cli.Conn())
 	return client.SignIn(ctx, in, opts...)
 }

@@ -1,6 +1,7 @@
 package authorization
 
 import (
+	"github.com/Guvanchhojamov/gozero-app/gateway/api/internal/handler/response"
 	"net/http"
 
 	"github.com/Guvanchhojamov/gozero-app/gateway/api/internal/logic/authorization"
@@ -14,6 +15,7 @@ func SignUpHandler(svcCtx *svc.ServiceContext) http.HandlerFunc {
 		var req types.SignUpReq
 		if err := httpx.Parse(r, &req); err != nil {
 			httpx.ErrorCtx(r.Context(), w, err)
+			response.NewErrorResponse(http.StatusBadRequest, "errInvalidArgumentSignUpHandler", w)
 			return
 		}
 
@@ -21,6 +23,7 @@ func SignUpHandler(svcCtx *svc.ServiceContext) http.HandlerFunc {
 		resp, err := l.SignUp(&req)
 		if err != nil {
 			httpx.ErrorCtx(r.Context(), w, err)
+			response.NewErrorResponse(http.StatusInternalServerError, "errAuthSignupHandler", w)
 		} else {
 			httpx.OkJsonCtx(r.Context(), w, resp)
 		}

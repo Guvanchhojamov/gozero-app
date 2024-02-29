@@ -3,6 +3,7 @@ package main
 import (
 	"flag"
 	"fmt"
+	"github.com/zeromicro/go-zero/core/logx"
 
 	"github.com/Guvanchhojamov/gozero-app/gateway/services/authorization/rpc/internal/config"
 	"github.com/Guvanchhojamov/gozero-app/gateway/services/authorization/rpc/internal/server"
@@ -16,14 +17,18 @@ import (
 	"google.golang.org/grpc/reflection"
 )
 
-var configFile = flag.String("f", "etc/auth-rpc-local.yaml", "the config file")
+var configFile = flag.String("f", "etc/auth.yaml", "the config file")
 
 func main() {
 	flag.Parse()
 
 	var c config.Config
 	conf.MustLoad(*configFile, &c)
-	ctx := svc.NewServiceContext(c)
+	ctx, err := svc.NewServiceContext(c)
+	if err != nil {
+		logx.Error(err)
+		return
+	}
 
 	s := zrpc.MustNewServer(c.RpcServerConf, func(grpcServer *grpc.Server) {
 		v1.RegisterUserAuthServiceServer(grpcServer, server.NewUserAuthServiceServer(ctx))
@@ -32,6 +37,7 @@ func main() {
 			reflection.Register(grpcServer)
 		}
 	})
+	s.
 	defer s.Stop()
 
 	fmt.Printf("Starting rpc server at %s...\n", c.ListenOn)

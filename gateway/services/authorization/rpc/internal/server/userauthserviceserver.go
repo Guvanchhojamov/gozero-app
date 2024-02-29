@@ -27,7 +27,7 @@ func (s *UserAuthServiceServer) SignUp(ctx context.Context, in *v1.SignUpRequest
 	return l.SignUp(in)
 }
 
-func (s *UserAuthServiceServer) SignIn(ctx context.Context, in *v1.SignInRequest) (*v1.SignUpResponse, error) {
+func (s *UserAuthServiceServer) SignIn(ctx context.Context, in *v1.SignInRequest) (*v1.SignInResponse, error) {
 	l := logic.NewSignInLogic(ctx, s.svcCtx)
 	return l.SignIn(in)
 }
