@@ -7,8 +7,8 @@ import (
 	"github.com/Guvanchhojamov/gozero-app/gateway/services/authorization/rpc/internal/response"
 	"github.com/go-errors/errors"
 	"github.com/golang-jwt/jwt/v4"
-	"github.com/jackc/pgx/v4"
-	"github.com/jackc/pgx/v4/pgxpool"
+	"github.com/jackc/pgx/v5"
+	"github.com/jackc/pgx/v5/pgxpool"
 	"google.golang.org/grpc/codes"
 	"strings"
 	"time"
@@ -17,11 +17,6 @@ import (
 type Repository struct {
 	db *pgxpool.Pool
 }
-
-const (
-	usersTable      = "users"
-	errUserExistsPG = "duplicate key value violates unique constraint"
-)
 
 func NewRepository(db *pgxpool.Pool) *Repository {
 	return &Repository{db: db}
@@ -66,7 +61,3 @@ func (r *Repository) getUserFromDB(ctx context.Context, login string, passHash s
 	}
 	return user, nil
 }
-
-//func (r *Repository) CheckRolePersmission(ctx context.Context, userId uint32) {
-//	query := fmt.Sprintf(`SELECT roles.id AS role_id, roles.name FROM roles JOIN users ON roles.id = users.role_id WHERE users.id = 1`)
-//}

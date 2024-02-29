@@ -1,7 +1,6 @@
 package middleware
 
 import (
-	"fmt"
 	"github.com/Guvanchhojamov/gozero-app/gateway/api/domain"
 	"github.com/Guvanchhojamov/gozero-app/gateway/api/internal/handler/response"
 	"github.com/go-errors/errors"
@@ -11,10 +10,6 @@ import (
 	"net/http"
 	"strconv"
 	"strings"
-)
-
-const (
-	authHeaderKey = "Authorization"
 )
 
 type HeaderValidationMiddleware struct {
@@ -38,16 +33,14 @@ func (m *HeaderValidationMiddleware) Handle(next http.HandlerFunc) http.HandlerF
 			return
 		}
 		// end
-		fmt.Println(bearerToken, bearerToken[1])
 		userId, err := m.auth.ParseToken(bearerToken[1])
 		if err != nil {
 			response.NewErrorResponse(http.StatusUnauthorized, errors.New("invalid token").Error(), w)
 			logx.Errorf("invalid token: %s", bearerToken[1])
 			return
 		}
-		ctx = metadata.AppendToOutgoingContext(r.Context(), "userId", strconv.FormatUint(uint64(userId), 10))
+		ctx = metadata.AppendToOutgoingContext(r.Context(), userIdCtxKey, strconv.FormatUint(uint64(userId), 10))
 		newReq := r.WithContext(ctx)
-		// Passthrough to next handler if need
 		next(w, newReq)
 	}
 }

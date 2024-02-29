@@ -3,7 +3,7 @@ package database
 import (
 	"context"
 	"github.com/go-errors/errors"
-	"github.com/jackc/pgx/v4/pgxpool"
+	"github.com/jackc/pgx/v5/pgxpool"
 	"net/url"
 )
 
@@ -21,7 +21,7 @@ type Params struct {
 func NewPostgres(ctx context.Context, cfg Params) (*pgxpool.Pool, error) {
 	dbURL := "postgres://" + cfg.Username + ":" + url.QueryEscape(cfg.Password) + "@" + cfg.Host + ":" + cfg.Port + "/" + cfg.DbName + "?sslmode=" + cfg.SslMode
 	//fmt.Println(dbURL)
-	dbPool, err := pgxpool.Connect(ctx, dbURL)
+	dbPool, err := pgxpool.New(ctx, dbURL)
 	if err != nil {
 		return nil, errors.New(err)
 	}
