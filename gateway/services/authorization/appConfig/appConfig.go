@@ -1,8 +1,10 @@
 package appConfig
 
 type App struct {
-	Postgres Postgres
-	Cache    Cache
+	Postgres     Postgres
+	JWTSecretKey string
+	PasswordSalt string
+	Cache        Cache
 }
 
 type Postgres struct {

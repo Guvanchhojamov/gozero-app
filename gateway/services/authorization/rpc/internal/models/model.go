@@ -10,3 +10,9 @@ type CustomTokenClaims struct {
 	jwt.RegisteredClaims
 	UserId uint32 `json:"userId"`
 }
+
+type SignUp struct {
+	Login    string `json:"login"`
+	Password string `json:"password"`
+	RoleId   uint32 `json:"roleId"`
+}

@@ -12,6 +12,8 @@ App:
     Port: "5464"
     DbName: testdb
     SslMode: disable
+  JWTSecretKey: "abc"
+  PasswordSalt: "123"
   Cache:
     Host: localhost:9000
     Pass: pass123

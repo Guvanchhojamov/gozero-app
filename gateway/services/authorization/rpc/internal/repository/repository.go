@@ -5,12 +5,12 @@ import (
 	"fmt"
 	"github.com/Guvanchhojamov/gozero-app/gateway/services/authorization/rpc/internal/models"
 	"github.com/Guvanchhojamov/gozero-app/gateway/services/authorization/rpc/internal/response"
-	"github.com/Guvanchhojamov/gozero-app/gateway/services/authorization/rpc/userauthservice"
 	"github.com/go-errors/errors"
 	"github.com/golang-jwt/jwt/v4"
 	"github.com/jackc/pgx/v4"
 	"github.com/jackc/pgx/v4/pgxpool"
 	"google.golang.org/grpc/codes"
+	"strings"
 	"time"
 )
 
@@ -19,37 +19,39 @@ type Repository struct {
 }
 
 const (
-	usersTable = "users"
+	usersTable      = "users"
+	errUserExistsPG = "duplicate key value violates unique constraint"
 )
 
 func NewRepository(db *pgxpool.Pool) *Repository {
 	return &Repository{db: db}
 }
 
-func (r *Repository) CreateUser(ctx context.Context, userInput *userauthservice.SignUpRequest) (userId uint32, err error) {
-	query := fmt.Sprintf(`INSERT INTO users (login,role_id, password) VALUES ($1, $2, $3, ...)`)
-	rows, err := r.db.Query(ctx, query)
-	if err != nil {
-		return 0, err
+func (r *Repository) CreateUser(ctx context.Context, userInput *models.SignUp, salt string) (userId uint32, err error) {
+	query := fmt.Sprintf(`INSERT INTO users (login,role_id, password) VALUES ($1, $2, $3) RETURNING id`)
+	if err = r.db.QueryRow(ctx, query, userInput.Login, userInput.RoleId, generateHashPassword(userInput.Password, salt)).Scan(&userId); err != nil {
+		if strings.Contains(err.Error(), errUserExistsPG) {
+			return 0, errors.New("user already exists")
+		}
 	}
-	fmt.Println(rows)
-	return 0, nil
+
+	return userId, nil
 }
 
-func (r *Repository) GenerateToken(ctx context.Context, username, password string) (string, error) {
+func (r *Repository) GenerateToken(ctx context.Context, username, password, jwtSignedKey, salt string) (string, error) {
 	// get user from DB
-	user, err := r.getUserFromDB(ctx, username, generateHashPassword(password))
+	user, err := r.getUserFromDB(ctx, username, generateHashPassword(password, salt))
 	if err != nil {
 		return "", err
 	}
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, &models.CustomTokenClaims{
-		jwt.RegisteredClaims{
+		RegisteredClaims: jwt.RegisteredClaims{
 			ExpiresAt: &jwt.NumericDate{Time: time.Now().Add(tokenTLL)},
 			IssuedAt:  &jwt.NumericDate{Time: time.Now()},
 		},
-		user.Id,
+		UserId: user.Id,
 	})
-	return token.SignedString([]byte(signedKey))
+	return token.SignedString([]byte(jwtSignedKey))
 }
 
 func (r *Repository) getUserFromDB(ctx context.Context, login string, passHash string) (models.User, error) {
@@ -65,6 +67,6 @@ func (r *Repository) getUserFromDB(ctx context.Context, login string, passHash s
 	return user, nil
 }
 
-func (r *Repository) CheckRolePersmission(ctx context.Context, userId uint32) {
-	query := fmt.Sprintf(`SELECT roles.id AS role_id, roles.name FROM roles JOIN users ON roles.id = users.role_id WHERE users.id = 1`)
-}
+//func (r *Repository) CheckRolePersmission(ctx context.Context, userId uint32) {
+//	query := fmt.Sprintf(`SELECT roles.id AS role_id, roles.name FROM roles JOIN users ON roles.id = users.role_id WHERE users.id = 1`)
+//}

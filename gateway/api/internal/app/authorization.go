@@ -15,10 +15,13 @@ func NewAuthorization(authJwtSignKey string) *Authorization {
 }
 
 func (a *Authorization) ParseToken(accessToken string) (userID uint32, err error) {
-	var claims models.ClientTokenClaims
+	var claims models.CustomTokenClaims
 	token, err := jwt.ParseWithClaims(accessToken, &claims, func(token *jwt.Token) (interface{}, error) {
 		return []byte(a.authJwtSignKey), nil
 	})
+	if err != nil {
+		return 0, err
+	}
 	switch {
 	case !token.Valid:
 		return 0, fmt.Errorf("errParseToken.invalidTokenMsg")

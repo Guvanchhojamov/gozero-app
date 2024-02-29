@@ -7,12 +7,12 @@ import (
 )
 
 const (
-	salt      = "123"
-	tokenTLL  = time.Hour * 12
-	signedKey = "abc"
+	//salt      = "123"
+	tokenTLL = time.Hour * 12
+	//signedKey = "abc"
 )
 
-func generateHashPassword(password string) string {
+func generateHashPassword(password, salt string) string {
 	hash := sha1.New()
 	hash.Write([]byte(password))
 	return fmt.Sprintf("%x", hash.Sum([]byte(salt))) //Sum()  is hashedString+salt
