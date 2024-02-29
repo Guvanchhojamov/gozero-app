@@ -14,16 +14,16 @@ func SignUpHandler(svcCtx *svc.ServiceContext) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		var req types.SignUpReq
 		if err := httpx.Parse(r, &req); err != nil {
-			httpx.ErrorCtx(r.Context(), w, err)
 			response.NewErrorResponse(http.StatusBadRequest, "errInvalidArgumentSignUpHandler", w)
+			httpx.ErrorCtx(r.Context(), w, err)
 			return
 		}
 
 		l := authorization.NewSignUpLogic(r.Context(), svcCtx)
 		resp, err := l.SignUp(&req)
 		if err != nil {
-			httpx.ErrorCtx(r.Context(), w, err)
 			response.NewErrorResponse(http.StatusInternalServerError, "errAuthSignupHandler", w)
+			httpx.ErrorCtx(r.Context(), w, err)
 		} else {
 			httpx.OkJsonCtx(r.Context(), w, resp)
 		}

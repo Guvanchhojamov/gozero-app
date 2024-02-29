@@ -23,7 +23,8 @@ func NewSignInLogic(ctx context.Context, svcCtx *svc.ServiceContext) *SignInLogi
 }
 
 func (l *SignInLogic) SignIn(in *v1.SignInRequest) (*v1.SignInResponse, error) {
-	token, err := l.svcCtx.App.Repository.GenerateToken(l.ctx, in.Login, in.Password)
+
+	token, err := l.svcCtx.App.Repository.GenerateToken(l.ctx, in.Login, in.Password, l.svcCtx.Config.App.JWTSecretKey, l.svcCtx.Config.App.PasswordSalt)
 	if err != nil {
 		logx.Errorf("errGenerateToken: %s", err)
 		return nil, err

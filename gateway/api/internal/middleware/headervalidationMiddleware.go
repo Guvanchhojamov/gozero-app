@@ -1,8 +1,10 @@
 package middleware
 
 import (
+	"fmt"
 	"github.com/Guvanchhojamov/gozero-app/gateway/api/domain"
 	"github.com/Guvanchhojamov/gozero-app/gateway/api/internal/handler/response"
+	"github.com/go-errors/errors"
 	"github.com/zeromicro/go-zero/core/logx"
 	"github.com/zeromicro/go-zero/core/trace"
 	"google.golang.org/grpc/metadata"
@@ -31,16 +33,16 @@ func (m *HeaderValidationMiddleware) Handle(next http.HandlerFunc) http.HandlerF
 		authHeader := r.Header.Get(authHeaderKey)
 		bearerToken := strings.Split(authHeader, " ")
 		if len(bearerToken) != 2 {
-			logx.Errorf("invalid bearer: %s", bearerToken)
 			response.NewErrorResponse(http.StatusBadRequest, "invalid bearer", w)
+			logx.Errorf("invalid bearer: %s", bearerToken)
 			return
 		}
 		// end
-
+		fmt.Println(bearerToken, bearerToken[1])
 		userId, err := m.auth.ParseToken(bearerToken[1])
 		if err != nil {
+			response.NewErrorResponse(http.StatusUnauthorized, errors.New("invalid token").Error(), w)
 			logx.Errorf("invalid token: %s", bearerToken[1])
-			response.NewErrorResponse(http.StatusUnauthorized, "invalid token: auhtMiddlewarePareseToken", w)
 			return
 		}
 		ctx = metadata.AppendToOutgoingContext(r.Context(), "userId", strconv.FormatUint(uint64(userId), 10))
