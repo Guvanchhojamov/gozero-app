@@ -20,7 +20,7 @@ type ServiceContext struct {
 func NewServiceContext(c config.Config, appDomain *app.Domain) *ServiceContext {
 	return &ServiceContext{
 		Config:                     c,
-		RolePermissionMiddleware:   middleware.NewRolePermissionMiddleware().Handle,
+		RolePermissionMiddleware:   middleware.NewRolePermissionMiddleware(appDomain.Authorization).Handle,
 		HeaderValidationMiddleware: middleware.NewHeaderValidationMiddleware(appDomain.Authorization).Handle,
 		Authorization:              userauthservice.NewUserAuthService(zrpc.MustNewClient(c.Services.Authorization)),
 		App:                        app.NewDomain(c),
