@@ -5,4 +5,5 @@ const (
 	authHeaderKey   = "Authorization"
 	userIdCtxKey    = "userId"
 	errUnauthorized = "error: Unauthorized"
+	roleIdCtxKey    = "roleId"
 )
