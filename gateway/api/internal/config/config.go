@@ -12,6 +12,7 @@ type Config struct {
 }
 type Services struct {
 	Authorization zrpc.RpcClientConf
+	Product       zrpc.RpcClientConf
 }
 
 type App struct {

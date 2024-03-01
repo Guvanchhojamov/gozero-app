@@ -7,6 +7,11 @@ Services:
       Hosts:
         - 127.0.0.1:2379
       Key: auth.rpc
+  Product:
+    Etcd:
+      Hosts:
+        - 127.0.0.1:2379
+      Key: products.rpc
 
 App:
   DateBase:
