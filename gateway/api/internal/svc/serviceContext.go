@@ -13,6 +13,7 @@ type ServiceContext struct {
 	Config                     config.Config
 	RolePermissionMiddleware   rest.Middleware
 	HeaderValidationMiddleware rest.Middleware
+	IsAdminValidateMiddleware  rest.Middleware
 	Authorization              userauthservice.UserAuthService
 	App                        *app.Domain
 }
@@ -22,6 +23,7 @@ func NewServiceContext(c config.Config, appDomain *app.Domain) *ServiceContext {
 		Config:                     c,
 		RolePermissionMiddleware:   middleware.NewRolePermissionMiddleware(appDomain.Authorization).Handle,
 		HeaderValidationMiddleware: middleware.NewHeaderValidationMiddleware(appDomain.Authorization).Handle,
+		IsAdminValidateMiddleware:  middleware.NewIsAdminValidateMiddleware(appDomain.Authorization).Handle,
 		Authorization:              userauthservice.NewUserAuthService(zrpc.MustNewClient(c.Services.Authorization)),
 		App:                        app.NewDomain(c),
 	}

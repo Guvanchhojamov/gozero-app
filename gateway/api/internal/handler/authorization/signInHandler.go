@@ -19,7 +19,6 @@ func SignInHandler(svcCtx *svc.ServiceContext) http.HandlerFunc {
 			httpx.ErrorCtx(r.Context(), w, err)
 			return
 		}
-
 		l := authorization.NewSignInLogic(r.Context(), svcCtx)
 		resp, err := l.SignIn(&req)
 		if err != nil {
