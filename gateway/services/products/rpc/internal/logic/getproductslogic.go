@@ -27,9 +27,9 @@ func NewGetProductsLogic(ctx context.Context, svcCtx *svc.ServiceContext) *GetPr
 func (l *GetProductsLogic) GetProducts(in *v1.GetProductsRequest) (*v1.GetProductsResponse, error) {
 	ctx, span := trace.TracerFromContext(l.ctx).Start(l.ctx, "CreateProductLogic.Create")
 	defer span.End()
-	products, err := l.svcCtx.App.Repository.Product.GetProducts(ctx, in)
+	productsResp, err := l.svcCtx.App.Repository.Product.GetProducts(ctx, in)
 	if err != nil {
 		return nil, err
 	}
-	return &v1.GetProductsResponse{Products: products.Products}, nil
+	return productsResp, nil
 }

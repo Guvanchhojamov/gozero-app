@@ -28,14 +28,13 @@ func (p *ProductRepo) CreateProduct(ctx context.Context, input *v1.CreateProduct
 }
 
 func (p *ProductRepo) GetProducts(ctx context.Context, input *v1.GetProductsRequest) (*v1.GetProductsResponse, error) {
-	var resp *v1.GetProductsResponse
-	query := fmt.Sprintf(`SELECT id,name,price,created_at  
+	var products []*v1.Product
+	query := fmt.Sprintf(`SELECT id,name,price  
 									FROM %s`, productsTable)
 	rows, err := p.db.Query(ctx, query)
-	fmt.Println(err)
 	defer rows.Close()
 	if err != nil {
-		return &v1.GetProductsResponse{}, errors.New(err)
+		return nil, errors.New(err)
 	}
 	for rows.Next() {
 		var product v1.Product
@@ -45,8 +44,7 @@ func (p *ProductRepo) GetProducts(ctx context.Context, input *v1.GetProductsRequ
 			&product.Price); err != nil {
 			return nil, err
 		}
-		resp.Products = append(resp.Products, &product)
-		fmt.Println(resp.Products)
+		products = append(products, &product)
 	}
-	return &v1.GetProductsResponse{}, nil
+	return &v1.GetProductsResponse{Products: products}, nil
 }
