@@ -42,7 +42,7 @@ service appServerApi {
 	delete /product/:productId (deleteProductReq) returns (updateProductResp)
 
 	@handler GetById
-	get /produtc/:productId (getProductByIdReq) returns (getProductByIdResp)
+	get /product/:productId (getProductByIdReq) returns (getProductByIdResp)
 
 	@handler GetProducts
 	get /products (getProductsReq) returns (getProductsResp)

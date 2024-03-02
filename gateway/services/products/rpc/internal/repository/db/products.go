@@ -29,7 +29,7 @@ func (p *ProductRepo) CreateProduct(ctx context.Context, input *v1.CreateProduct
 
 func (p *ProductRepo) GetProducts(ctx context.Context, input *v1.GetProductsRequest) (*v1.GetProductsResponse, error) {
 	var products []*v1.Product
-	query := fmt.Sprintf(`SELECT id,name,price  
+	query := fmt.Sprintf(`SELECT id,name,price
 									FROM %s`, productsTable)
 	rows, err := p.db.Query(ctx, query)
 	defer rows.Close()
@@ -42,9 +42,23 @@ func (p *ProductRepo) GetProducts(ctx context.Context, input *v1.GetProductsRequ
 			&product.Id,
 			&product.Name,
 			&product.Price); err != nil {
-			return nil, err
+			return nil, errors.New(err)
 		}
 		products = append(products, &product)
 	}
 	return &v1.GetProductsResponse{Products: products}, nil
+}
+func (p *ProductRepo) GetProductById(ctx context.Context, input *v1.GetProductByIdRequest) (*v1.GetProductByIdResponse, error) {
+	var product v1.Product
+	query := fmt.Sprintf(`SELECT id,name,price
+									FROM %s WHERE id=$1`, productsTable)
+	if err := p.db.QueryRow(ctx, query, input.Id).Scan(
+		&product.Id,
+		&product.Name,
+		&product.Price,
+	); err != nil {
+		return nil, errors.New(err)
+	}
+	response := &v1.GetProductByIdResponse{Product: &product}
+	return response, nil
 }

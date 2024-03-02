@@ -2,9 +2,10 @@ package products
 
 import (
 	"context"
-
 	"github.com/Guvanchhojamov/gozero-app/gateway/api/internal/svc"
 	"github.com/Guvanchhojamov/gozero-app/gateway/api/internal/types"
+	v1 "github.com/Guvanchhojamov/gozero-app/gateway/services/products/rpc/v1"
+	"github.com/zeromicro/go-zero/core/trace"
 
 	"github.com/zeromicro/go-zero/core/logx"
 )
@@ -23,8 +24,13 @@ func NewGetByIdLogic(ctx context.Context, svcCtx *svc.ServiceContext) *GetByIdLo
 	}
 }
 
-func (l *GetByIdLogic) GetById(req *types.GetProductByIdReq) (resp *types.GetProductByIdResp, err error) {
-	// todo: add your logic here and delete this line
-
-	return
+func (l *GetByIdLogic) GetById(req *types.GetProductByIdReq) (resp *v1.GetProductByIdResponse, err error) {
+	ctx, span := trace.TracerFromContext(l.ctx).Start(l.ctx, "CreateProductLogic.Create")
+	defer span.End()
+	input := &v1.GetProductByIdRequest{Id: req.ProductId}
+	resp, err = l.svcCtx.Product.GetProductById(ctx, input)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
 }
