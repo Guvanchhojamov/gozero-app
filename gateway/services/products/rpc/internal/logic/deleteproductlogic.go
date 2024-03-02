@@ -2,6 +2,7 @@ package logic
 
 import (
 	"context"
+	"github.com/zeromicro/go-zero/core/trace"
 
 	"github.com/Guvanchhojamov/gozero-app/gateway/services/products/rpc/internal/svc"
 	"github.com/Guvanchhojamov/gozero-app/gateway/services/products/rpc/v1"
@@ -24,7 +25,11 @@ func NewDeleteProductLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Del
 }
 
 func (l *DeleteProductLogic) DeleteProduct(in *v1.DeleteProductRequest) (*v1.DeleteProductResponse, error) {
-	// todo: add your logic here and delete this line
-
-	return &v1.DeleteProductResponse{}, nil
+	ctx, span := trace.TracerFromContext(l.ctx).Start(l.ctx, "CreateProductLogic.Create")
+	defer span.End()
+	resp, err := l.svcCtx.App.Repository.Product.DeleteProduct(ctx, in)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
 }

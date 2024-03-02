@@ -39,10 +39,10 @@ service appServerApi {
 	patch /product/update (updateProductReq) returns (updateProductResp)
 
 	@handler Delete
-	delete /product/:productId (deleteProductReq) returns (updateProductResp)
+	delete /product/:productId (deleteProductReq) returns (deleteProductResp)
 
 	@handler GetById
-	get /produtc/:productId (getProductByIdReq) returns (getProductByIdResp)
+	get /product/:productId (getProductByIdReq) returns (getProductByIdResp)
 
 	@handler GetProducts
 	get /products (getProductsReq) returns (getProductsResp)

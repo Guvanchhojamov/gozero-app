@@ -62,6 +62,11 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 					Handler: products.DeleteHandler(serverCtx),
 				},
 				{
+					Method:  http.MethodGet,
+					Path:    "/product/:productId",
+					Handler: products.GetByIdHandler(serverCtx),
+				},
+				{
 					Method:  http.MethodPost,
 					Path:    "/product/create",
 					Handler: products.CreateHandler(serverCtx),
@@ -75,11 +80,6 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 					Method:  http.MethodGet,
 					Path:    "/products",
 					Handler: products.GetProductsHandler(serverCtx),
-				},
-				{
-					Method:  http.MethodGet,
-					Path:    "/produtc/:productId",
-					Handler: products.GetByIdHandler(serverCtx),
 				},
 			}...,
 		),

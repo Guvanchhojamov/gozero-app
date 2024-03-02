@@ -3,6 +3,7 @@ package main
 import (
 	"flag"
 	"fmt"
+	"github.com/zeromicro/go-zero/core/logx"
 
 	"github.com/Guvanchhojamov/gozero-app/gateway/services/products/rpc/internal/config"
 	"github.com/Guvanchhojamov/gozero-app/gateway/services/products/rpc/internal/server"
@@ -23,8 +24,11 @@ func main() {
 
 	var c config.Config
 	conf.MustLoad(*configFile, &c)
-	ctx := svc.NewServiceContext(c)
-
+	ctx, err := svc.NewServiceContext(c)
+	if err != nil {
+		logx.Error(err)
+		return
+	}
 	s := zrpc.MustNewServer(c.RpcServerConf, func(grpcServer *grpc.Server) {
 		v1.RegisterProductServiceServer(grpcServer, server.NewProductServiceServer(ctx))
 
@@ -34,6 +38,6 @@ func main() {
 	})
 	defer s.Stop()
 
-	fmt.Printf("Starting rpc server at %s...\n", c.ListenOn)
+	fmt.Printf("Starting product rpc server at %s...\n", c.ListenOn)
 	s.Start()
 }

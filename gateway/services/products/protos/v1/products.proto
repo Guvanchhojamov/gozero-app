@@ -48,7 +48,7 @@ message DeleteProductRequest{
 }
 message DeleteProductResponse{
     uint32 statusCode = 1;
-    uint32 message = 2;
+    string message = 2;
 }
 //
 service ProductService{

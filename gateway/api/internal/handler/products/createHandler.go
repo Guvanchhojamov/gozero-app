@@ -1,6 +1,7 @@
 package products
 
 import (
+	"github.com/Guvanchhojamov/gozero-app/gateway/api/internal/handler/response"
 	"net/http"
 
 	"github.com/Guvanchhojamov/gozero-app/gateway/api/internal/logic/products"
@@ -20,6 +21,7 @@ func CreateHandler(svcCtx *svc.ServiceContext) http.HandlerFunc {
 		l := products.NewCreateLogic(r.Context(), svcCtx)
 		resp, err := l.Create(&req)
 		if err != nil {
+			response.NewErrorResponse(http.StatusInternalServerError, "errCreateProduct", w)
 			httpx.ErrorCtx(r.Context(), w, err)
 		} else {
 			httpx.OkJsonCtx(r.Context(), w, resp)

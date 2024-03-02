@@ -1,6 +1,8 @@
 package products
 
 import (
+	"fmt"
+	"github.com/Guvanchhojamov/gozero-app/gateway/api/internal/handler/response"
 	"net/http"
 
 	"github.com/Guvanchhojamov/gozero-app/gateway/api/internal/logic/products"
@@ -20,6 +22,7 @@ func GetByIdHandler(svcCtx *svc.ServiceContext) http.HandlerFunc {
 		l := products.NewGetByIdLogic(r.Context(), svcCtx)
 		resp, err := l.GetById(&req)
 		if err != nil {
+			response.NewErrorResponse(http.StatusInternalServerError, fmt.Sprintf("errGetById: %s", err.Error()), w)
 			httpx.ErrorCtx(r.Context(), w, err)
 		} else {
 			httpx.OkJsonCtx(r.Context(), w, resp)

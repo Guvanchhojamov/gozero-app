@@ -4,7 +4,7 @@ import (
 	"context"
 	"fmt"
 	"github.com/Guvanchhojamov/gozero-app/gateway/services/authorization/rpc/internal/models"
-	"github.com/Guvanchhojamov/gozero-app/gateway/services/authorization/rpc/internal/response"
+	"github.com/Guvanchhojamov/gozero-app/gateway/services/common/response"
 	"github.com/go-errors/errors"
 	"github.com/golang-jwt/jwt/v4"
 	"github.com/jackc/pgx/v5"
