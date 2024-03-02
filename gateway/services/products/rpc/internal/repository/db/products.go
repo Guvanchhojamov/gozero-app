@@ -89,3 +89,7 @@ func (p *ProductRepo) DeleteProduct(ctx context.Context, input *v1.DeleteProduct
 	}
 	return resp, nil
 }
+
+func UpdateProduct() {
+
+}
