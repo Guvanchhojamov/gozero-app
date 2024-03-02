@@ -10,6 +10,7 @@ import (
 	"github.com/jackc/pgx/v5/pgxpool"
 	"google.golang.org/grpc/codes"
 	"net/http"
+	"strings"
 )
 
 type ProductRepo struct {
@@ -90,6 +91,32 @@ func (p *ProductRepo) DeleteProduct(ctx context.Context, input *v1.DeleteProduct
 	return resp, nil
 }
 
-func UpdateProduct() {
+func (p *ProductRepo) UpdateProduct(ctx context.Context, input *v1.UpdateProductRequest) (*v1.UpdateProductResponse, error) {
+	var setVals = make([]string, 0)
+	var args = make([]interface{}, 0)
+	var argId = 1
+	fmt.Println(input)
+	if len(*input.Name) != 0 {
+		setVals = append(setVals, fmt.Sprintf("name=$%d", argId))
+		args = append(args, *input.Name)
+		argId++
+	}
 
+	if *input.Price != 0 {
+		setVals = append(setVals, fmt.Sprintf("price=$%d", argId))
+		args = append(args, *input.Price)
+		argId++
+	}
+
+	setString := strings.Join(setVals, ", ")
+	args = append(args, input.Id)
+	updateQuery := fmt.Sprintf(`UPDATE %[1]s 
+												SET %[2]s
+													WHERE id=$%[3]d`, productsTable, setString, argId)
+
+	_, err := p.db.Exec(ctx, updateQuery, args...)
+	if err != nil {
+		return nil, response.NewRpcErrResponse(codes.Internal, errors.New(err))
+	}
+	return &v1.UpdateProductResponse{ProductId: input.Id}, nil
 }

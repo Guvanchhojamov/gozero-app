@@ -2,6 +2,7 @@ package logic
 
 import (
 	"context"
+	"github.com/zeromicro/go-zero/core/trace"
 
 	"github.com/Guvanchhojamov/gozero-app/gateway/services/products/rpc/internal/svc"
 	"github.com/Guvanchhojamov/gozero-app/gateway/services/products/rpc/v1"
@@ -24,7 +25,12 @@ func NewUpdateProductLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Upd
 }
 
 func (l *UpdateProductLogic) UpdateProduct(in *v1.UpdateProductRequest) (*v1.UpdateProductResponse, error) {
-	// todo: add your logic here and delete this line
+	ctx, span := trace.TracerFromContext(l.ctx).Start(l.ctx, "UpdateProductLogic.Update")
+	defer span.End()
+	product, err := l.svcCtx.App.Repository.Product.UpdateProduct(ctx, in)
+	if err != nil {
+		return nil, err
+	}
 
-	return &v1.UpdateProductResponse{}, nil
+	return product, nil
 }

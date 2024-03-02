@@ -4,7 +4,7 @@ Go-zero is a web and rpc framework that integrates various engineering practices
 Docs: https://go-zero.dev/en/
 # Instruction
 1. Install Dependencies and Run containers
-   - ```make depe app-dependencies-up```
+   - ```make app-dependencies-up```
 2. Create Table and run migrate files 
    - ```make migrate``` 
 3. Run RPC services
@@ -14,4 +14,3 @@ Docs: https://go-zero.dev/en/
 4. Run Gateway API
 
 For more details see ```MakeFile```
-   

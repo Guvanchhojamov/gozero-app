@@ -37,7 +37,7 @@ type (
 		ProductId uint32 `json:"productId"`
 	}
 	updateProductReq {
-		Id    uint32  `json:"id"`
+		Id uint32 `json:"id"`
 		Name  string  `json:"name,optional"`
 		Price float32 `json:"price,optional"`
 	}
