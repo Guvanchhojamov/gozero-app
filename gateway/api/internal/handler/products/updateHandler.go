@@ -1,6 +1,8 @@
 package products
 
 import (
+	"fmt"
+	"github.com/Guvanchhojamov/gozero-app/gateway/api/internal/handler/response"
 	"net/http"
 
 	"github.com/Guvanchhojamov/gozero-app/gateway/api/internal/logic/products"
@@ -20,6 +22,7 @@ func UpdateHandler(svcCtx *svc.ServiceContext) http.HandlerFunc {
 		l := products.NewUpdateLogic(r.Context(), svcCtx)
 		resp, err := l.Update(&req)
 		if err != nil {
+			response.NewErrorResponse(http.StatusInternalServerError, fmt.Sprintf("errUpdateProduct: %s", err.Error()), w)
 			httpx.ErrorCtx(r.Context(), w, err)
 		} else {
 			httpx.OkJsonCtx(r.Context(), w, resp)
