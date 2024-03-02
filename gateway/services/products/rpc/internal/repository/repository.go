@@ -9,6 +9,7 @@ import (
 
 type IProduct interface {
 	CreateProduct(ctx context.Context, input *v1.CreateProductRequest) (*v1.CreateProductResponse, error)
+	GetProducts(ctx context.Context, input *v1.GetProductsRequest) (*v1.GetProductsResponse, error)
 }
 
 type Repository struct {

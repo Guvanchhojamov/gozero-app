@@ -2,6 +2,7 @@ package logic
 
 import (
 	"context"
+	"github.com/zeromicro/go-zero/core/trace"
 
 	"github.com/Guvanchhojamov/gozero-app/gateway/services/products/rpc/internal/svc"
 	"github.com/Guvanchhojamov/gozero-app/gateway/services/products/rpc/v1"
@@ -24,7 +25,11 @@ func NewGetProductsLogic(ctx context.Context, svcCtx *svc.ServiceContext) *GetPr
 }
 
 func (l *GetProductsLogic) GetProducts(in *v1.GetProductsRequest) (*v1.GetProductsResponse, error) {
-	// todo: add your logic here and delete this line
-
-	return &v1.GetProductsResponse{}, nil
+	ctx, span := trace.TracerFromContext(l.ctx).Start(l.ctx, "CreateProductLogic.Create")
+	defer span.End()
+	products, err := l.svcCtx.App.Repository.Product.GetProducts(ctx, in)
+	if err != nil {
+		return nil, err
+	}
+	return &v1.GetProductsResponse{Products: products.Products}, nil
 }
