@@ -38,7 +38,7 @@ type DeleteProductReq struct {
 
 type DeleteProductResp struct {
 	StatusCode uint32 `json:"statusCode"`
-	Message    uint32 `json:"message":"productId"`
+	Message    string `json:"message"`
 }
 
 type GetOrdersReq struct {

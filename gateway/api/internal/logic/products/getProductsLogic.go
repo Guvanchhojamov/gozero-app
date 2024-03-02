@@ -26,7 +26,7 @@ func NewGetProductsLogic(ctx context.Context, svcCtx *svc.ServiceContext) *GetPr
 }
 
 func (l *GetProductsLogic) GetProducts(req *types.GetProductsReq) (resp *v1.GetProductsResponse, err error) {
-	ctx, span := trace.TracerFromContext(l.ctx).Start(l.ctx, "CreateProductLogic.Create")
+	ctx, span := trace.TracerFromContext(l.ctx).Start(l.ctx, "GetProducts.GetProducts")
 	defer span.End()
 
 	products, err := l.svcCtx.Product.GetProducts(ctx, &v1.GetProductsRequest{})

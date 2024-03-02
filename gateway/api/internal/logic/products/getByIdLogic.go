@@ -25,7 +25,7 @@ func NewGetByIdLogic(ctx context.Context, svcCtx *svc.ServiceContext) *GetByIdLo
 }
 
 func (l *GetByIdLogic) GetById(req *types.GetProductByIdReq) (resp *v1.GetProductByIdResponse, err error) {
-	ctx, span := trace.TracerFromContext(l.ctx).Start(l.ctx, "CreateProductLogic.Create")
+	ctx, span := trace.TracerFromContext(l.ctx).Start(l.ctx, "GetByIdLogic.GetByID")
 	defer span.End()
 	input := &v1.GetProductByIdRequest{Id: req.ProductId}
 	resp, err = l.svcCtx.Product.GetProductById(ctx, input)

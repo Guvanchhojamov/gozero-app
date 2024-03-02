@@ -3,9 +3,13 @@ package db
 import (
 	"context"
 	"fmt"
+	"github.com/Guvanchhojamov/gozero-app/gateway/services/common/response"
 	v1 "github.com/Guvanchhojamov/gozero-app/gateway/services/products/rpc/v1"
 	"github.com/go-errors/errors"
+	"github.com/jackc/pgx/v5"
 	"github.com/jackc/pgx/v5/pgxpool"
+	"google.golang.org/grpc/codes"
+	"net/http"
 )
 
 type ProductRepo struct {
@@ -22,7 +26,7 @@ func (p *ProductRepo) CreateProduct(ctx context.Context, input *v1.CreateProduct
 										VALUES ($1, $2) RETURNING id`, productsTable)
 	err := p.db.QueryRow(ctx, query, input.Name, input.Price).Scan(&prodId)
 	if err != nil {
-		return &v1.CreateProductResponse{}, errors.New(err)
+		return &v1.CreateProductResponse{}, response.NewRpcErrResponse(codes.Internal, errors.New(err))
 	}
 	return &v1.CreateProductResponse{ProductId: prodId}, nil
 }
@@ -34,7 +38,7 @@ func (p *ProductRepo) GetProducts(ctx context.Context, input *v1.GetProductsRequ
 	rows, err := p.db.Query(ctx, query)
 	defer rows.Close()
 	if err != nil {
-		return nil, errors.New(err)
+		return nil, response.NewRpcErrResponse(codes.Internal, errors.New(err))
 	}
 	for rows.Next() {
 		var product v1.Product
@@ -57,8 +61,31 @@ func (p *ProductRepo) GetProductById(ctx context.Context, input *v1.GetProductBy
 		&product.Name,
 		&product.Price,
 	); err != nil {
-		return nil, errors.New(err)
+		if err.Error() == pgx.ErrNoRows.Error() {
+			return nil, errors.New("product not found")
+		}
+		return nil, response.NewRpcErrResponse(codes.NotFound, errors.New(err))
 	}
-	response := &v1.GetProductByIdResponse{Product: &product}
-	return response, nil
+	resp := &v1.GetProductByIdResponse{Product: &product}
+	return resp, nil
+}
+func (p *ProductRepo) DeleteProduct(ctx context.Context, input *v1.DeleteProductRequest) (*v1.DeleteProductResponse, error) {
+	var resp *v1.DeleteProductResponse
+	query := fmt.Sprintf(`DELETE FROM %s WHERE id=$1`, productsTable)
+	exec, err := p.db.Exec(ctx, query, input.ProductId)
+	if err != nil {
+		return nil, response.NewRpcErrResponse(codes.Internal, errors.New(err))
+	}
+	if rowsAffected := exec.RowsAffected(); rowsAffected > 0 {
+		resp = &v1.DeleteProductResponse{
+			StatusCode: http.StatusOK,
+			Message:    "success",
+		}
+		return resp, nil
+	}
+	resp = &v1.DeleteProductResponse{
+		StatusCode: http.StatusBadRequest,
+		Message:    "error",
+	}
+	return resp, nil
 }
