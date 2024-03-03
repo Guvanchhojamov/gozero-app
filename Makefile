@@ -33,3 +33,7 @@ run-product:
 	go run ./gateway/services/products/rpc/products.go -f ./gateway/services/products/rpc/etc/products-local.yaml
 run-order:
 	go run ./gateway/services/orders/rpc/orders.go -f ./gateway/services/orders/rpc/etc/orders-local.yaml
+
+# Docs
+generate-docs-api:
+	goctl api doc -dir . -o ./guide
