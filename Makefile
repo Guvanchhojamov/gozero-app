@@ -21,6 +21,8 @@ generate-authorization-proto:
 	goctl rpc protoc  gateway/services/authorization/protos/v1/auth.proto --go_out=./gateway/services/authorization/rpc --go-grpc_out=./gateway/services/authorization/rpc/. --zrpc_out=./gateway/services/authorization/rpc/.
 generate-products-proto:
 	goctl rpc protoc  gateway/services/products/protos/v1/products.proto --go_out=./gateway/services/products/rpc --go-grpc_out=./gateway/services/products/rpc/. --zrpc_out=./gateway/services/products/rpc/.
+generate-orders-proto:
+	goctl rpc protoc  gateway/services/orders/protos/v1/orders.proto --go_out=./gateway/services/orders/rpc --go-grpc_out=./gateway/services/orders/rpc/. --zrpc_out=./gateway/services/orders/rpc/.
 
 # Run
 run-gateway:
@@ -29,3 +31,5 @@ run-auth:
 	go run ./gateway/services/authorization/rpc/auth.go -f ./gateway/services/authorization/rpc/etc/auth-local.yaml
 run-product:
 	go run ./gateway/services/products/rpc/products.go -f ./gateway/services/products/rpc/etc/products-local.yaml
+run-order:
+	go run ./gateway/services/orders/rpc/orders.go -f ./gateway/services/orders/rpc/etc/orders-local.yaml

@@ -5,6 +5,7 @@ import (
 	"github.com/Guvanchhojamov/gozero-app/gateway/api/internal/config"
 	"github.com/Guvanchhojamov/gozero-app/gateway/api/internal/middleware"
 	"github.com/Guvanchhojamov/gozero-app/gateway/services/authorization/rpc/userauthservice"
+	"github.com/Guvanchhojamov/gozero-app/gateway/services/orders/rpc/orderservice"
 	"github.com/Guvanchhojamov/gozero-app/gateway/services/products/rpc/productservice"
 	"github.com/zeromicro/go-zero/rest"
 	"github.com/zeromicro/go-zero/zrpc"
@@ -18,6 +19,7 @@ type ServiceContext struct {
 	App                        *app.Domain
 	Authorization              userauthservice.UserAuthService
 	Product                    productservice.ProductService
+	Order                      orderservice.OrderService
 }
 
 func NewServiceContext(c config.Config, appDomain *app.Domain) *ServiceContext {
@@ -29,5 +31,6 @@ func NewServiceContext(c config.Config, appDomain *app.Domain) *ServiceContext {
 		App:                        app.NewDomain(c),
 		Authorization:              userauthservice.NewUserAuthService(zrpc.MustNewClient(c.Services.Authorization)),
 		Product:                    productservice.NewProductService(zrpc.MustNewClient(c.Services.Product)),
+		Order:                      orderservice.NewOrderService(zrpc.MustNewClient(c.Services.Order)),
 	}
 }
