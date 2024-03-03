@@ -1,5 +1,7 @@
 package db
 
 const (
-	ordersTable = "orders"
+	ordersTable   = "orders"
+	productsTable = "products"
+	usersTable    = "users"
 )

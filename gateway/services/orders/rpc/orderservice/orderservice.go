@@ -13,12 +13,27 @@ import (
 )
 
 type (
-	GetOrdersRequest  = v1.GetOrdersRequest
-	GetOrdersResponse = v1.GetOrdersResponse
-	Order             = v1.Order
+	CreateOrderRequest   = v1.CreateOrderRequest
+	CreateOrderResponse  = v1.CreateOrderResponse
+	DeleteOrderRequest   = v1.DeleteOrderRequest
+	DeleteOrderResponse  = v1.DeleteOrderResponse
+	GetOrderByIdRequest  = v1.GetOrderByIdRequest
+	GetOrderByIdResponse = v1.GetOrderByIdResponse
+	GetOrdersRequest     = v1.GetOrdersRequest
+	GetOrdersResponse    = v1.GetOrdersResponse
+	Order                = v1.Order
+	OrderById            = v1.OrderById
+	OrderProduct         = v1.OrderProduct
+	OrderUser            = v1.OrderUser
+	UpdateOrderRequest   = v1.UpdateOrderRequest
+	UpdateOrderResponse  = v1.UpdateOrderResponse
 
 	OrderService interface {
 		GetOrders(ctx context.Context, in *GetOrdersRequest, opts ...grpc.CallOption) (*GetOrdersResponse, error)
+		GetOrderById(ctx context.Context, in *GetOrderByIdRequest, opts ...grpc.CallOption) (*GetOrderByIdResponse, error)
+		CreateOrder(ctx context.Context, in *CreateOrderRequest, opts ...grpc.CallOption) (*CreateOrderResponse, error)
+		UpdateOrder(ctx context.Context, in *UpdateOrderRequest, opts ...grpc.CallOption) (*UpdateOrderResponse, error)
+		DeleteOrder(ctx context.Context, in *DeleteOrderRequest, opts ...grpc.CallOption) (*DeleteOrderResponse, error)
 	}
 
 	defaultOrderService struct {
@@ -35,4 +50,24 @@ func NewOrderService(cli zrpc.Client) OrderService {
 func (m *defaultOrderService) GetOrders(ctx context.Context, in *GetOrdersRequest, opts ...grpc.CallOption) (*GetOrdersResponse, error) {
 	client := v1.NewOrderServiceClient(m.cli.Conn())
 	return client.GetOrders(ctx, in, opts...)
+}
+
+func (m *defaultOrderService) GetOrderById(ctx context.Context, in *GetOrderByIdRequest, opts ...grpc.CallOption) (*GetOrderByIdResponse, error) {
+	client := v1.NewOrderServiceClient(m.cli.Conn())
+	return client.GetOrderById(ctx, in, opts...)
+}
+
+func (m *defaultOrderService) CreateOrder(ctx context.Context, in *CreateOrderRequest, opts ...grpc.CallOption) (*CreateOrderResponse, error) {
+	client := v1.NewOrderServiceClient(m.cli.Conn())
+	return client.CreateOrder(ctx, in, opts...)
+}
+
+func (m *defaultOrderService) UpdateOrder(ctx context.Context, in *UpdateOrderRequest, opts ...grpc.CallOption) (*UpdateOrderResponse, error) {
+	client := v1.NewOrderServiceClient(m.cli.Conn())
+	return client.UpdateOrder(ctx, in, opts...)
+}
+
+func (m *defaultOrderService) DeleteOrder(ctx context.Context, in *DeleteOrderRequest, opts ...grpc.CallOption) (*DeleteOrderResponse, error) {
+	client := v1.NewOrderServiceClient(m.cli.Conn())
+	return client.DeleteOrder(ctx, in, opts...)
 }

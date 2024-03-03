@@ -10,6 +10,20 @@ message Order {
     float price=4;
     uint32 CreatedAt=5;
 }
+message OrderUser {
+  uint32 userId=1;
+  string username=2;
+}
+message OrderProduct{
+  uint32  productId=1;
+  string name=2;
+}
+message OrderById {
+  uint32 id=1;
+  OrderUser user=2;
+  OrderProduct product=3;
+  float price=4;
+}
 // Get all orders
 message GetOrdersRequest{}
 
@@ -21,7 +35,7 @@ message GetOrderByIdRequest{
   uint32 id=1;
 }
 message GetOrderByIdResponse{
-  Order product = 1;
+  OrderById order = 1;
 }
 
 // Create
@@ -39,7 +53,7 @@ message UpdateOrderRequest{
   uint32 id=1;
   optional uint32 userId=2;
   optional uint32 productId=3;
-  optional float price=4;
+  float price=4;
 }
 message UpdateOrderResponse{
   uint32 orderId=1;

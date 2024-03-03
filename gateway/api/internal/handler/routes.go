@@ -43,17 +43,17 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 			[]rest.Middleware{serverCtx.HeaderValidationMiddleware, serverCtx.RolePermissionMiddleware},
 			[]rest.Route{
 				{
-					Method:  http.MethodGet,
+					Method:  http.MethodDelete,
 					Path:    "/order/:orderId",
 					Handler: orders.DeleteOrderHandler(serverCtx),
 				},
 				{
-					Method:  http.MethodGet,
+					Method:  http.MethodPost,
 					Path:    "/order/create",
 					Handler: orders.CreateOrderHandler(serverCtx),
 				},
 				{
-					Method:  http.MethodGet,
+					Method:  http.MethodPatch,
 					Path:    "/order/update",
 					Handler: orders.UpdateOrderHandler(serverCtx),
 				},

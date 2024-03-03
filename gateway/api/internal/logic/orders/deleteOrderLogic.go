@@ -2,6 +2,8 @@ package orders
 
 import (
 	"context"
+	v1 "github.com/Guvanchhojamov/gozero-app/gateway/services/orders/rpc/v1"
+	"github.com/zeromicro/go-zero/core/trace"
 
 	"github.com/Guvanchhojamov/gozero-app/gateway/api/internal/svc"
 	"github.com/Guvanchhojamov/gozero-app/gateway/api/internal/types"
@@ -23,8 +25,12 @@ func NewDeleteOrderLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Delet
 	}
 }
 
-func (l *DeleteOrderLogic) DeleteOrder(req *types.DeleteOrderReq) (resp *types.DeleteOrderResp, err error) {
-	// todo: add your logic here and delete this line
-
-	return
+func (l *DeleteOrderLogic) DeleteOrder(req *types.DeleteOrderReq) (resp *v1.DeleteOrderResponse, err error) {
+	ctx, span := trace.TracerFromContext(l.ctx).Start(l.ctx, "CreateProductLogic.Create")
+	defer span.End()
+	resp, err = l.svcCtx.Order.DeleteOrder(ctx, &v1.DeleteOrderRequest{OrderId: req.OrderId})
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
 }
