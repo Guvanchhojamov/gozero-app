@@ -7,7 +7,8 @@ message Order {
     uint32 id=1;
     uint32 userId=2;
     uint32 productId=3;
-    uint32 CreatedAt=4;
+    float price=4;
+    uint32 CreatedAt=5;
 }
 // Get all orders
 message GetOrdersRequest{}
@@ -15,9 +16,50 @@ message GetOrdersRequest{}
 message GetOrdersResponse{
   repeated Order orders=1;
 }
+// Get By Id
+message GetOrderByIdRequest{
+  uint32 id=1;
+}
+message GetOrderByIdResponse{
+  Order product = 1;
+}
+
+// Create
+message CreateOrderRequest{
+  uint32 userId=1;
+  uint32 productId=2;
+  float price=3;
+}
+message CreateOrderResponse{
+  uint32 orderId=1;
+}
+
+// Update
+message UpdateOrderRequest{
+  uint32 id=1;
+  optional uint32 userId=2;
+  optional uint32 productId=3;
+  optional float price=4;
+}
+message UpdateOrderResponse{
+  uint32 orderId=1;
+}
+
+// Delete
+message DeleteOrderRequest{
+  uint32 orderId=1;
+}
+message DeleteOrderResponse{
+  uint32 statusCode = 1;
+  string message = 2;
+}
 
 service OrderService{
   rpc GetOrders (GetOrdersRequest) returns (GetOrdersResponse);
+  rpc GetOrderById (GetOrderByIdRequest) returns (GetOrderByIdResponse);
+  rpc CreateOrder (CreateOrderRequest) returns (CreateOrderResponse);
+  rpc UpdateOrder (UpdateOrderRequest) returns (UpdateOrderResponse);
+  rpc DeleteOrder (DeleteOrderRequest) returns (DeleteOrderResponse);
 }
 
 

@@ -44,8 +44,28 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 			[]rest.Route{
 				{
 					Method:  http.MethodGet,
+					Path:    "/order/:orderId",
+					Handler: orders.DeleteOrderHandler(serverCtx),
+				},
+				{
+					Method:  http.MethodGet,
+					Path:    "/order/create",
+					Handler: orders.CreateOrderHandler(serverCtx),
+				},
+				{
+					Method:  http.MethodGet,
+					Path:    "/order/update",
+					Handler: orders.UpdateOrderHandler(serverCtx),
+				},
+				{
+					Method:  http.MethodGet,
 					Path:    "/orders",
 					Handler: orders.GetOrdersHandler(serverCtx),
+				},
+				{
+					Method:  http.MethodGet,
+					Path:    "/orders/:orderId",
+					Handler: orders.GetOrderByIdHandler(serverCtx),
 				},
 			}...,
 		),

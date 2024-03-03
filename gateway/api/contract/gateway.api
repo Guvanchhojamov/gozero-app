@@ -35,15 +35,19 @@ service appServerApi {
 	@handler Create
 	post /product/create (createProductReq) returns (createProductResp)
 
+	@doc "Update Product"
 	@handler Update
 	patch /product/update (updateProductReq) returns (updateProductResp)
 
+	@doc "Delete Product"
 	@handler Delete
 	delete /product/:productId (deleteProductReq) returns (deleteProductResp)
 
+	@doc "Product GetById"
 	@handler GetById
 	get /product/:productId (getProductByIdReq) returns (getProductByIdResp)
 
+	@doc "Get All Products"
 	@handler GetProducts
 	get /products (getProductsReq) returns (getProductsResp)
 }
@@ -57,5 +61,21 @@ service appServerApi {
 	@doc "Orders routes"
 	@handler GetOrders
 	get /orders (getOrdersReq) returns (getOrdersResp)
+
+	@doc "GetById"
+	@handler GetOrderById
+	get /orders/:orderId (getOrderByIdReq) returns (getOrderByIdResp)
+
+	@doc "CreateOrder"
+	@handler CreateOrder
+	get /order/create (createOrderReq) returns (createOrderResp)
+
+	@doc "UpdateOrder"
+	@handler UpdateOrder
+	get /order/update (updateOrderReq) returns (updateOrderResp)
+
+	@doc "DeleteOrder"
+	@handler DeleteOrder
+	get /order/:orderId (deleteOrderReq) returns (deleteOrderResp)
 }
 

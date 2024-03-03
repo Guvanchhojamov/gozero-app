@@ -2,10 +2,11 @@
 package types
 
 type Order struct {
-	Id        uint32 `json:"id"`
-	UserId    uint32 `json:"userId"`
-	ProductId uint32 `json:"productId"`
-	CreatedAt uint32 `json:"createdAt"`
+	Id        uint32  `json:"id"`
+	UserId    uint32  `json:"userId"`
+	ProductId uint32  `json:"productId"`
+	Price     float32 `json:"price"`
+	CreatedAt uint32  `json:"createdAt"`
 }
 
 type Product struct {
@@ -23,6 +24,22 @@ type User struct {
 	CreatedAt    uint32 `json:"createdAt"`
 }
 
+type UserOrder struct {
+	Id    uint32 `json:"id"`
+	Login string `json:"login"`
+}
+
+type CreateOrderReq struct {
+	Id        uint32  `json:"id"`
+	UserId    uint32  `json:"userId"`
+	ProductId uint32  `json:"productId"`
+	Price     float32 `json:"price"`
+}
+
+type CreateOrderResp struct {
+	OrderId uint32 `json:"orderId"`
+}
+
 type CreateProductReq struct {
 	Name  string  `json:"name"`
 	Price float32 `json:"price"`
@@ -32,6 +49,15 @@ type CreateProductResp struct {
 	ProductId uint32 `json:"productId"`
 }
 
+type DeleteOrderReq struct {
+	OrderId uint32 `path:"orderId"`
+}
+
+type DeleteOrderResp struct {
+	StatusCode uint32 `json:"statusCode"`
+	Message    string `json:"message"`
+}
+
 type DeleteProductReq struct {
 	ProductId uint32 `path:"productId"`
 }
@@ -39,6 +65,17 @@ type DeleteProductReq struct {
 type DeleteProductResp struct {
 	StatusCode uint32 `json:"statusCode"`
 	Message    string `json:"message"`
+}
+
+type GetOrderByIdReq struct {
+	OrderId uint32 `path:"orderId"`
+}
+
+type GetOrderByIdResp struct {
+	Id      uint32    `json:"id"`
+	User    UserOrder `json:"user"`
+	Product Product   `json:"product"`
+	Price   float32   `json:"price"`
 }
 
 type GetOrdersReq struct {
@@ -80,6 +117,17 @@ type SignUpReq struct {
 
 type SignUpResp struct {
 	UserId uint32 `json:"userId"`
+}
+
+type UpdateOrderReq struct {
+	Id        uint32  `json:"id"`
+	UserId    uint32  `json:"userId"`
+	ProductId uint32  `json:"productId"`
+	Price     float32 `json:"price"`
+}
+
+type UpdateOrderResp struct {
+	OrderId uint32 `json:"orderId"`
 }
 
 type UpdateProductReq struct {
