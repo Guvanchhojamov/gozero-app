@@ -1,0 +1,27 @@
+syntax = "proto3";
+
+package auth;
+option go_package="./v1";
+
+message Order {
+    uint32 id=1;
+    uint32 userId=2;
+    uint32 productId=3;
+    uint32 CreatedAt=4;
+}
+// Get all orders
+message GetOrdersRequest{}
+
+message GetOrdersResponse{
+  repeated Order orders=1;
+}
+
+service OrderService{
+  rpc GetOrders (GetOrdersRequest) returns (GetOrdersResponse);
+}
+
+
+
+
+
+

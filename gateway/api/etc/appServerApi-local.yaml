@@ -12,6 +12,11 @@ Services:
       Hosts:
         - 127.0.0.1:2379
       Key: products.rpc
+  Order:
+    Etcd:
+      Hosts:
+        - 127.0.0.1:2379
+      Key: orders.rpc
 
 App:
   DateBase:

@@ -5,6 +5,7 @@ import (
 	"github.com/Guvanchhojamov/gozero-app/gateway/services/products/rpc/internal/config"
 	"github.com/Guvanchhojamov/gozero-app/gateway/services/products/rpc/internal/repository"
 	"github.com/Guvanchhojamov/gozero-app/third_party/database"
+	"github.com/go-errors/errors"
 	"github.com/zeromicro/go-zero/core/logx"
 )
 
@@ -16,7 +17,7 @@ func NewApp(cnf config.Config) (*App, error) {
 	dbPool, err := database.NewPostgres(context.Background(), database.Params(cnf.App.Postgres))
 	if err != nil {
 		logx.Error(err)
-		return nil, err
+		return nil, errors.New(err)
 	}
 	newRepo := repository.NewRepository(dbPool)
 	return &App{Repository: newRepo}, nil
