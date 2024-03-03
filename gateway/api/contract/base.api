@@ -8,6 +8,10 @@ type (
 		PasswordHash string `json:"password_hash"`
 		CreatedAt    uint32 `json:"createdAt"`
 	}
+	UserOrder {
+		Id           uint32 `json:"id"`
+		Login        string `json:"login"`
+	}
 	Product {
 		Id        uint32  `json:"id"`
 		Name      string  `json:"name"`
@@ -18,6 +22,7 @@ type (
 		Id        uint32 `json:"id"`
 		UserId    uint32 `json:"userId"`
 		ProductId uint32 `json:"productId"`
+		Price float32 `json:"price"`
 		CreatedAt uint32 `json:"createdAt"`
 	}
 )

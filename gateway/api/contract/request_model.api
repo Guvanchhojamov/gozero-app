@@ -63,5 +63,42 @@ type (
 	getOrdersResp {
 		Orders []Order `json:"orders"`
 	}
+	createOrderReq {
+		Id        uint32 `json:"id"`
+		UserId    uint32 `json:"userId"`
+		ProductId uint32 `json:"productId"`
+		Price float32 `json:"price"`
+	}
+	createOrderResp {
+		OrderId uint32 `json:"orderId"`
+	}
+
+	getOrderByIdReq{
+		OrderId uint32 `path:"orderId"`
+	}
+	getOrderByIdResp{
+		Id uint32 `json:"id"`
+		User UserOrder `json:"user"`
+		Product Product `json:"product"`
+		Price float32 `json:"price"`
+	}
+
+	updateOrderReq{
+		Id        uint32 `json:"id"`
+		UserId    uint32 `json:"userId"`
+		ProductId uint32 `json:"productId"`
+		Price float32 `json:"price"`
+	}
+	updateOrderResp{
+		orderId uint32 `json:"orderId"`
+	}
+
+	deleteOrderReq{
+		orderId uint32 `path:"orderId"`
+	}
+	deleteOrderResp{
+		StatusCode uint32 `json:"statusCode"`
+		Message    string `json:"message"`
+	}
 )
 
