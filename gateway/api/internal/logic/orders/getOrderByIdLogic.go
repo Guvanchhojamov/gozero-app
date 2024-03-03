@@ -2,6 +2,8 @@ package orders
 
 import (
 	"context"
+	v1 "github.com/Guvanchhojamov/gozero-app/gateway/services/orders/rpc/v1"
+	"github.com/zeromicro/go-zero/core/trace"
 
 	"github.com/Guvanchhojamov/gozero-app/gateway/api/internal/svc"
 	"github.com/Guvanchhojamov/gozero-app/gateway/api/internal/types"
@@ -23,8 +25,12 @@ func NewGetOrderByIdLogic(ctx context.Context, svcCtx *svc.ServiceContext) *GetO
 	}
 }
 
-func (l *GetOrderByIdLogic) GetOrderById(req *types.GetOrderByIdReq) (resp *types.GetOrderByIdResp, err error) {
-	// todo: add your logic here and delete this line
-
-	return
+func (l *GetOrderByIdLogic) GetOrderById(req *types.GetOrderByIdReq) (resp *v1.GetOrderByIdResponse, err error) {
+	ctx, span := trace.TracerFromContext(l.ctx).Start(l.ctx, "CreateProductLogic.Create")
+	defer span.End()
+	resp, err = l.svcCtx.Order.GetOrderById(ctx, &v1.GetOrderByIdRequest{Id: req.OrderId})
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
 }

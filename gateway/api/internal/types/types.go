@@ -30,7 +30,6 @@ type UserOrder struct {
 }
 
 type CreateOrderReq struct {
-	Id        uint32  `json:"id"`
 	UserId    uint32  `json:"userId"`
 	ProductId uint32  `json:"productId"`
 	Price     float32 `json:"price"`

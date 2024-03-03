@@ -68,14 +68,14 @@ service appServerApi {
 
 	@doc "CreateOrder"
 	@handler CreateOrder
-	get /order/create (createOrderReq) returns (createOrderResp)
+	post /order/create (createOrderReq) returns (createOrderResp)
 
 	@doc "UpdateOrder"
 	@handler UpdateOrder
-	get /order/update (updateOrderReq) returns (updateOrderResp)
+	patch /order/update (updateOrderReq) returns (updateOrderResp)
 
 	@doc "DeleteOrder"
 	@handler DeleteOrder
-	get /order/:orderId (deleteOrderReq) returns (deleteOrderResp)
+	delete /order/:orderId (deleteOrderReq) returns (deleteOrderResp)
 }
 

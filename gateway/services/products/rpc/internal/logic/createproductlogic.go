@@ -26,11 +26,8 @@ func NewCreateProductLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Cre
 func (l *CreateProductLogic) CreateProduct(in *v1.CreateProductRequest) (*v1.CreateProductResponse, error) {
 	ctx, span := trace.TracerFromContext(l.ctx).Start(l.ctx, "CreateProductLogic.Create")
 	defer span.End()
-	input := &v1.CreateProductRequest{
-		Name:  in.Name,
-		Price: in.Price,
-	}
-	newProduct, err := l.svcCtx.App.Repository.Product.CreateProduct(ctx, input)
+
+	newProduct, err := l.svcCtx.App.Repository.Product.CreateProduct(ctx, in)
 	if err != nil {
 		return nil, err
 	}

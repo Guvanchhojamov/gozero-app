@@ -26,3 +26,23 @@ func (s *OrderServiceServer) GetOrders(ctx context.Context, in *v1.GetOrdersRequ
 	l := logic.NewGetOrdersLogic(ctx, s.svcCtx)
 	return l.GetOrders(in)
 }
+
+func (s *OrderServiceServer) GetOrderById(ctx context.Context, in *v1.GetOrderByIdRequest) (*v1.GetOrderByIdResponse, error) {
+	l := logic.NewGetOrderByIdLogic(ctx, s.svcCtx)
+	return l.GetOrderById(in)
+}
+
+func (s *OrderServiceServer) CreateOrder(ctx context.Context, in *v1.CreateOrderRequest) (*v1.CreateOrderResponse, error) {
+	l := logic.NewCreateOrderLogic(ctx, s.svcCtx)
+	return l.CreateOrder(in)
+}
+
+func (s *OrderServiceServer) UpdateOrder(ctx context.Context, in *v1.UpdateOrderRequest) (*v1.UpdateOrderResponse, error) {
+	l := logic.NewUpdateOrderLogic(ctx, s.svcCtx)
+	return l.UpdateOrder(in)
+}
+
+func (s *OrderServiceServer) DeleteOrder(ctx context.Context, in *v1.DeleteOrderRequest) (*v1.DeleteOrderResponse, error) {
+	l := logic.NewDeleteOrderLogic(ctx, s.svcCtx)
+	return l.DeleteOrder(in)
+}

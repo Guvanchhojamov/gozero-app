@@ -1,6 +1,7 @@
 package orders
 
 import (
+	"github.com/Guvanchhojamov/gozero-app/gateway/api/internal/handler/response"
 	"net/http"
 
 	"github.com/Guvanchhojamov/gozero-app/gateway/api/internal/logic/orders"
@@ -20,6 +21,7 @@ func CreateOrderHandler(svcCtx *svc.ServiceContext) http.HandlerFunc {
 		l := orders.NewCreateOrderLogic(r.Context(), svcCtx)
 		resp, err := l.CreateOrder(&req)
 		if err != nil {
+			response.NewErrorResponse(http.StatusInternalServerError, "errCreateOrder", w)
 			httpx.ErrorCtx(r.Context(), w, err)
 		} else {
 			httpx.OkJsonCtx(r.Context(), w, resp)
