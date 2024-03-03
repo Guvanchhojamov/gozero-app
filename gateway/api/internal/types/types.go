@@ -120,8 +120,8 @@ type SignUpResp struct {
 
 type UpdateOrderReq struct {
 	Id        uint32  `json:"id"`
-	UserId    uint32  `json:"userId"`
-	ProductId uint32  `json:"productId"`
+	UserId    uint32  `json:"userId,optional"`
+	ProductId uint32  `json:"productId,optional"`
 	Price     float32 `json:"price"`
 }
 

@@ -9,6 +9,7 @@ import (
 	"github.com/jackc/pgx/v5/pgxpool"
 	"google.golang.org/grpc/codes"
 	"net/http"
+	"strings"
 )
 
 type OrderRepo struct {
@@ -53,10 +54,10 @@ func (o *OrderRepo) GetOrderById(ctx context.Context, input *v1.GetOrderByIdRequ
     								p.id as productId,
     								p.name
             							FROM %[1]s  o
-            							JOIN %[2] u on u.id = o.user_id
-            							JOIN public.products p on p.id = o.product_id WHERE o.id=2`)
+            							JOIN %[2]s u ON u.id = o.user_id
+            							JOIN %[3]s p on p.id = o.product_id WHERE o.id=$1`, ordersTable, usersTable, productsTable)
 
-	if err := o.db.QueryRow(ctx, query).Scan(
+	if err := o.db.QueryRow(ctx, query, input.Id).Scan(
 		&order.Id,
 		&order.Price,
 		&order.User.UserId,
@@ -99,4 +100,42 @@ func (o *OrderRepo) DeleteOrder(ctx context.Context, input *v1.DeleteOrderReques
 		Message:    "error",
 	}
 	return resp, nil
+}
+func (o *OrderRepo) UpdateOrder(ctx context.Context, input *v1.UpdateOrderRequest) (*v1.UpdateOrderResponse, error) {
+	var setVals = make([]string, 0)
+	var args = make([]interface{}, 0)
+	var argId = 1
+	fmt.Println(input)
+	if *input.UserId != 0 {
+		setVals = append(setVals, fmt.Sprintf("user_id=$%d", argId))
+		args = append(args, *input.UserId)
+		argId++
+	}
+
+	if *input.ProductId != 0 {
+		setVals = append(setVals, fmt.Sprintf("product_id=$%d", argId))
+		args = append(args, *input.ProductId)
+		argId++
+	}
+	if input.Price != 0 {
+		setVals = append(setVals, fmt.Sprintf("price=$%d", argId))
+		args = append(args, input.Price)
+		argId++
+	}
+
+	setString := strings.Join(setVals, ", ")
+	args = append(args, input.Id)
+	updateQuery := fmt.Sprintf(`UPDATE %[1]s 
+												SET %[2]s
+													WHERE id=$%[3]d`, ordersTable, setString, argId)
+	fmt.Println(updateQuery)
+	fmt.Println(args)
+	exec, err := o.db.Exec(ctx, updateQuery, args...)
+	if err != nil {
+		return nil, response.NewRpcErrResponse(codes.Internal, errors.New(err))
+	}
+	if rowsAffected := exec.RowsAffected(); rowsAffected <= 0 {
+		return nil, response.NewRpcErrResponse(codes.Internal, errors.New("order not found"))
+	}
+	return &v1.UpdateOrderResponse{OrderId: input.Id}, nil
 }

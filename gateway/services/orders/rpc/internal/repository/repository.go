@@ -12,6 +12,7 @@ type IOrder interface {
 	CreateOrder(ctx context.Context, input *v1.CreateOrderRequest) (*v1.CreateOrderResponse, error)
 	DeleteOrder(ctx context.Context, input *v1.DeleteOrderRequest) (*v1.DeleteOrderResponse, error)
 	GetOrderById(ctx context.Context, input *v1.GetOrderByIdRequest) (*v1.GetOrderByIdResponse, error)
+	UpdateOrder(ctx context.Context, input *v1.UpdateOrderRequest) (*v1.UpdateOrderResponse, error)
 }
 
 type Repository struct {
