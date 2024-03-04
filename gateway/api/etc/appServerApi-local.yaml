@@ -28,6 +28,3 @@ App:
       DbName: testdb
       SslMode: disable
   JWTSecretKey: "abc"
-  Cache:
-      Host: localhost:9000
-      Pass: pass123
