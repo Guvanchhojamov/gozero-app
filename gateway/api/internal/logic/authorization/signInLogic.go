@@ -23,7 +23,6 @@ func NewSignInLogic(ctx context.Context, svcCtx *svc.ServiceContext) *SignInLogi
 }
 
 func (l *SignInLogic) SignIn(req *types.SignInReq) (resp *types.SignInResp, err error) {
-	// todo: add your logic here and delete this line
 	input := &userauthservice.SignInRequest{
 		Login:    req.Login,
 		Password: req.Password,
