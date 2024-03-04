@@ -2,8 +2,6 @@ package logic
 
 import (
 	"context"
-	"github.com/zeromicro/go-zero/core/trace"
-
 	"github.com/Guvanchhojamov/gozero-app/gateway/services/orders/rpc/internal/svc"
 	"github.com/Guvanchhojamov/gozero-app/gateway/services/orders/rpc/v1"
 
@@ -25,9 +23,7 @@ func NewGetOrdersLogic(ctx context.Context, svcCtx *svc.ServiceContext) *GetOrde
 }
 
 func (l *GetOrdersLogic) GetOrders(in *v1.GetOrdersRequest) (*v1.GetOrdersResponse, error) {
-	ctx, span := trace.TracerFromContext(l.ctx).Start(l.ctx, "CreateOrdersLogic.GeOrders")
-	defer span.End()
-	ordersResp, err := l.svcCtx.App.Repository.Order.GetOrders(ctx, in)
+	ordersResp, err := l.svcCtx.App.Repository.Order.GetOrders(l.ctx, in)
 	if err != nil {
 		return nil, err
 	}
