@@ -24,11 +24,6 @@ type User struct {
 	CreatedAt    uint32 `json:"createdAt"`
 }
 
-type UserOrder struct {
-	Id    uint32 `json:"id"`
-	Login string `json:"login"`
-}
-
 type CreateOrderReq struct {
 	UserId    uint32  `json:"userId"`
 	ProductId uint32  `json:"productId"`
@@ -71,10 +66,10 @@ type GetOrderByIdReq struct {
 }
 
 type GetOrderByIdResp struct {
-	Id      uint32    `json:"id"`
-	User    UserOrder `json:"user"`
-	Product Product   `json:"product"`
-	Price   float32   `json:"price"`
+	Id      uint32  `json:"id"`
+	User    User    `json:"user"`
+	Product Product `json:"product"`
+	Price   float32 `json:"price"`
 }
 
 type GetOrdersReq struct {
