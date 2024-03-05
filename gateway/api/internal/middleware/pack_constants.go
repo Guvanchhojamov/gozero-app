@@ -1,7 +1,5 @@
 package middleware
 
-import "fmt"
-
 // Header validation middleware
 const (
 	authHeaderKey   = "Authorization"
@@ -10,6 +8,6 @@ const (
 	roleIdCtxKey    = "roleId"
 )
 
-var (
-	ErrAccessDenied = fmt.Errorf("%s", "USER_ACCESS_DENIED")
-)
+//var (
+//	ErrAccessDenied = fmt.Errorf("%s", "USER_ACCESS_DENIED")
+//)
