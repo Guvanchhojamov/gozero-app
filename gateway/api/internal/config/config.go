@@ -19,7 +19,6 @@ type Services struct {
 type App struct {
 	DateBase     DateBase
 	JWTSecretKey string
-	Cache        Cache
 }
 
 type DateBase struct {
@@ -32,9 +31,4 @@ type Postgres struct {
 	Port     string
 	DbName   string
 	SslMode  string
-}
-
-type Cache struct {
-	Host string
-	Pass string
 }

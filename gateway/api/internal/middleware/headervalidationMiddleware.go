@@ -1,7 +1,7 @@
 package middleware
 
 import (
-	"github.com/Guvanchhojamov/gozero-app/gateway/api/domain"
+	"github.com/Guvanchhojamov/gozero-app/gateway/api/internal/app"
 	"github.com/Guvanchhojamov/gozero-app/gateway/api/internal/handler/response"
 	"github.com/go-errors/errors"
 	"github.com/zeromicro/go-zero/core/logx"
@@ -12,10 +12,10 @@ import (
 )
 
 type HeaderValidationMiddleware struct {
-	auth domain.Authorization
+	auth app.Authorization
 }
 
-func NewHeaderValidationMiddleware(auth domain.Authorization) *HeaderValidationMiddleware {
+func NewHeaderValidationMiddleware(auth app.Authorization) *HeaderValidationMiddleware {
 	return &HeaderValidationMiddleware{auth: auth}
 }
 

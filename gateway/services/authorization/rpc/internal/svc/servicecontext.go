@@ -1,17 +1,17 @@
 package svc
 
 import (
+	"github.com/Guvanchhojamov/gozero-app/gateway/services/authorization/rpc/internal/app"
 	"github.com/Guvanchhojamov/gozero-app/gateway/services/authorization/rpc/internal/config"
-	"github.com/Guvanchhojamov/gozero-app/gateway/services/authorization/rpc/internal/domain"
 )
 
 type ServiceContext struct {
 	Config config.Config
-	App    *domain.App
+	App    *app.App
 }
 
 func NewServiceContext(c config.Config) (*ServiceContext, error) {
-	newApp, err := domain.NewApp(c.App)
+	newApp, err := app.NewApp(c)
 	if err != nil {
 		return nil, err
 	}

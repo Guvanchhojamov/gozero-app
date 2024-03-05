@@ -16,19 +16,19 @@ type ServiceContext struct {
 	RolePermissionMiddleware   rest.Middleware
 	HeaderValidationMiddleware rest.Middleware
 	IsAdminValidateMiddleware  rest.Middleware
-	App                        *app.Domain
+	App                        *app.App
 	Authorization              userauthservice.UserAuthService
 	Product                    productservice.ProductService
 	Order                      orderservice.OrderService
 }
 
-func NewServiceContext(c config.Config, appDomain *app.Domain) *ServiceContext {
+func NewServiceContext(c config.Config, newApp *app.App) *ServiceContext {
 	return &ServiceContext{
 		Config:                     c,
-		RolePermissionMiddleware:   middleware.NewRolePermissionMiddleware(appDomain.Authorization).Handle,
-		HeaderValidationMiddleware: middleware.NewHeaderValidationMiddleware(appDomain.Authorization).Handle,
-		IsAdminValidateMiddleware:  middleware.NewIsAdminValidateMiddleware(appDomain.Authorization).Handle,
-		App:                        app.NewDomain(c),
+		RolePermissionMiddleware:   middleware.NewRolePermissionMiddleware(newApp.AuthRepo).Handle,
+		HeaderValidationMiddleware: middleware.NewHeaderValidationMiddleware(newApp.Authorization).Handle,
+		IsAdminValidateMiddleware:  middleware.NewIsAdminValidateMiddleware(newApp.AuthRepo).Handle,
+		App:                        newApp,
 		Authorization:              userauthservice.NewUserAuthService(zrpc.MustNewClient(c.Services.Authorization)),
 		Product:                    productservice.NewProductService(zrpc.MustNewClient(c.Services.Product)),
 		Order:                      orderservice.NewOrderService(zrpc.MustNewClient(c.Services.Order)),

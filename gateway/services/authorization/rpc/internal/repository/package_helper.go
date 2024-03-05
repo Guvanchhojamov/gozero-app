@@ -7,9 +7,7 @@ import (
 )
 
 const (
-	//salt      = "123"
 	tokenTLL = time.Hour * 12
-	//signedKey = "abc"
 )
 
 func generateHashPassword(password, salt string) string {

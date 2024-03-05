@@ -1,8 +1,7 @@
 package middleware
 
 import (
-	"github.com/Guvanchhojamov/gozero-app/gateway/api/domain"
-	"github.com/Guvanchhojamov/gozero-app/gateway/api/internal/app"
+	"github.com/Guvanchhojamov/gozero-app/gateway/api/internal/repository"
 	"github.com/go-errors/errors"
 	"github.com/zeromicro/go-zero/core/logx"
 	"github.com/zeromicro/go-zero/core/trace"
@@ -12,12 +11,12 @@ import (
 )
 
 type RolePermissionMiddleware struct {
-	auth domain.Authorization
+	authRepo repository.AuthRepository
 }
 
-func NewRolePermissionMiddleware(auth domain.Authorization) *RolePermissionMiddleware {
+func NewRolePermissionMiddleware(authRepo repository.AuthRepository) *RolePermissionMiddleware {
 	return &RolePermissionMiddleware{
-		auth: auth,
+		authRepo: authRepo,
 	}
 }
 
@@ -43,9 +42,9 @@ func (m *RolePermissionMiddleware) Handle(next http.HandlerFunc) http.HandlerFun
 			http.Error(w, errUnauthorized, http.StatusUnauthorized)
 			return
 		}
-		permission, err := m.auth.CheckRolePermission(ctx, uint32(userId))
+		permission, err := m.authRepo.CheckRolePermission(ctx, uint32(userId))
 		if err != nil {
-			if errors.Is(app.ErrAccessDenied, err) {
+			if errors.Is(ErrAccessDenied, err) {
 				http.Error(w, "permission denied", http.StatusForbidden)
 				return
 			}

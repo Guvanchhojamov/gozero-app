@@ -1,31 +1,27 @@
 package middleware
 
 import (
-	"github.com/Guvanchhojamov/gozero-app/gateway/api/domain"
-	"github.com/Guvanchhojamov/gozero-app/gateway/api/internal/app"
+	"github.com/Guvanchhojamov/gozero-app/gateway/api/internal/repository"
 	"github.com/go-errors/errors"
 	"github.com/zeromicro/go-zero/core/logx"
-	"github.com/zeromicro/go-zero/core/trace"
 	"google.golang.org/grpc/metadata"
 	"net/http"
 	"strconv"
 )
 
 type IsAdminValidateMiddleware struct {
-	auth domain.Authorization
+	authRepo repository.AuthRepository
 }
 
-func NewIsAdminValidateMiddleware(auth domain.Authorization) *IsAdminValidateMiddleware {
+func NewIsAdminValidateMiddleware(authRepo repository.AuthRepository) *IsAdminValidateMiddleware {
 	return &IsAdminValidateMiddleware{
-		auth: auth,
+		authRepo: authRepo,
 	}
 }
 
 func (m *IsAdminValidateMiddleware) Handle(next http.HandlerFunc) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		ctx, span := trace.TracerFromContext(r.Context()).Start(r.Context(), "RolePermissionMiddleware.Handle")
-		defer span.End()
-		md, ok := metadata.FromOutgoingContext(ctx)
+		md, ok := metadata.FromOutgoingContext(r.Context())
 		if !ok {
 			logx.ErrorStack("empty metadata")
 			http.Error(w, errUnauthorized, http.StatusUnauthorized)
@@ -43,9 +39,9 @@ func (m *IsAdminValidateMiddleware) Handle(next http.HandlerFunc) http.HandlerFu
 			http.Error(w, errUnauthorized, http.StatusUnauthorized)
 			return
 		}
-		permission, err := m.auth.CheckIsAdmin(ctx, uint32(userId))
+		permission, err := m.authRepo.CheckIsAdmin(r.Context(), uint32(userId))
 		if err != nil {
-			if errors.Is(app.ErrAccessDenied, err) {
+			if errors.Is(ErrAccessDenied, err) {
 				http.Error(w, "you don't have create user permission", http.StatusForbidden)
 				return
 			}
