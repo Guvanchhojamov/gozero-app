@@ -77,7 +77,7 @@ type (
 	}
 	getOrderByIdResp{
 		Id uint32 `json:"id"`
-		User UserOrder `json:"user"`
+		User User `json:"user"`
 		Product Product `json:"product"`
 		Price float32 `json:"price"`
 	}
