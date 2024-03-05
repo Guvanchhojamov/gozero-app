@@ -1,22 +1,25 @@
 package app
 
 import (
-	"github.com/Guvanchhojamov/gozero-app/gateway/api/domain"
 	"github.com/Guvanchhojamov/gozero-app/gateway/api/internal/config"
+	"github.com/Guvanchhojamov/gozero-app/gateway/api/internal/repository"
+	"github.com/go-errors/errors"
 	"github.com/zeromicro/go-zero/core/logx"
 )
 
-type Domain struct {
-	domain.Authorization
+type App struct {
+	AuthRepo      repository.AuthRepository
+	Authorization Authorization
 }
 
-func NewDomain(cnf config.Config) *Domain {
-	newAuth, err := NewAuthorization(cnf.App.JWTSecretKey, cnf.App.DateBase.Postgres)
+func NewApp(c config.Config) (*App, error) {
+	newAuthRepo, err := repository.NewAuthRepository(c)
 	if err != nil {
-		logx.ErrorStack(err)
-		return nil
+		logx.Error(err)
+		return nil, errors.New(err)
 	}
-	return &Domain{
-		Authorization: newAuth,
-	}
+	return &App{
+		AuthRepo:      *newAuthRepo,
+		Authorization: *NewAuthorization(c),
+	}, nil
 }
