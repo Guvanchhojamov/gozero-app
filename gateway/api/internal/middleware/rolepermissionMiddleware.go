@@ -1,6 +1,7 @@
 package middleware
 
 import (
+	"errors"
 	"github.com/Guvanchhojamov/gozero-app/gateway/api/internal/repository"
 	"github.com/zeromicro/go-zero/core/logx"
 	"google.golang.org/grpc/metadata"
@@ -40,7 +41,7 @@ func (m *RolePermissionMiddleware) Handle(next http.HandlerFunc) http.HandlerFun
 		}
 		permission, err := m.authRepo.CheckRolePermission(r.Context(), uint32(userId))
 		if err != nil {
-			if err.Error() == ErrAccessDenied.Error() {
+			if errors.Is(err, repository.ErrAccessDenied) {
 				http.Error(w, "permission denied", http.StatusForbidden)
 				return
 			}
