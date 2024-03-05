@@ -2,9 +2,7 @@ package middleware
 
 import (
 	"github.com/Guvanchhojamov/gozero-app/gateway/api/internal/repository"
-	"github.com/go-errors/errors"
 	"github.com/zeromicro/go-zero/core/logx"
-	"github.com/zeromicro/go-zero/core/trace"
 	"google.golang.org/grpc/metadata"
 	"net/http"
 	"strconv"
@@ -22,9 +20,7 @@ func NewRolePermissionMiddleware(authRepo repository.AuthRepository) *RolePermis
 
 func (m *RolePermissionMiddleware) Handle(next http.HandlerFunc) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		ctx, span := trace.TracerFromContext(r.Context()).Start(r.Context(), "RolePermissionMiddleware.Handle")
-		defer span.End()
-		md, ok := metadata.FromOutgoingContext(ctx)
+		md, ok := metadata.FromOutgoingContext(r.Context())
 		if !ok {
 			logx.ErrorStack("empty metadata")
 			http.Error(w, errUnauthorized, http.StatusUnauthorized)
@@ -42,9 +38,9 @@ func (m *RolePermissionMiddleware) Handle(next http.HandlerFunc) http.HandlerFun
 			http.Error(w, errUnauthorized, http.StatusUnauthorized)
 			return
 		}
-		permission, err := m.authRepo.CheckRolePermission(ctx, uint32(userId))
+		permission, err := m.authRepo.CheckRolePermission(r.Context(), uint32(userId))
 		if err != nil {
-			if errors.Is(ErrAccessDenied, err) {
+			if err.Error() == ErrAccessDenied.Error() {
 				http.Error(w, "permission denied", http.StatusForbidden)
 				return
 			}

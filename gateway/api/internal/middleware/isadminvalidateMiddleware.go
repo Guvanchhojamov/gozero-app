@@ -2,7 +2,6 @@ package middleware
 
 import (
 	"github.com/Guvanchhojamov/gozero-app/gateway/api/internal/repository"
-	"github.com/go-errors/errors"
 	"github.com/zeromicro/go-zero/core/logx"
 	"google.golang.org/grpc/metadata"
 	"net/http"
@@ -41,11 +40,11 @@ func (m *IsAdminValidateMiddleware) Handle(next http.HandlerFunc) http.HandlerFu
 		}
 		permission, err := m.authRepo.CheckIsAdmin(r.Context(), uint32(userId))
 		if err != nil {
-			if errors.Is(ErrAccessDenied, err) {
+			if err.Error() == ErrAccessDenied.Error() {
 				http.Error(w, "you don't have create user permission", http.StatusForbidden)
 				return
 			}
-			http.Error(w, "internal error", http.StatusInternalServerError)
+			http.Error(w, "internal error:", http.StatusInternalServerError)
 			return
 		}
 		if !permission {
